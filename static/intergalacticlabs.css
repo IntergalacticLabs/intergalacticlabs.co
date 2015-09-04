@@ -1,0 +1,156 @@
+:root {
+    --vibrant-color: #4ca646;
+}
+
+@-webkit-keyframes animated_background {
+    0% {
+        background-position: right bottom
+    }
+    100% {
+        background-position: 3000px  3000px
+    }
+}
+
+@keyframes animated_background {
+    0% {
+        background-position: right bottom
+    }
+    100% {
+        background-position: 3000px 3000px
+    }
+}
+
+body {
+    font-family: 'Titillium Web', sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+p {
+    font-weight: 100;
+    color: rgb(90, 90, 90);
+}
+
+.splash {
+    height: 100vh;
+}
+
+.splash * {
+    opacity: 0;
+    transition: opacity 4s;
+}
+
+.feature {
+    height: 300px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.tagline {
+    letter-spacing: 2px;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: grey;
+}
+
+.down {
+    color: grey;
+    font-size: x-large;
+}
+
+.down:hover {
+    color: grey;
+    -webkit-transform: translateY(10px);
+    transform: translateY(10px);
+}
+
+.wow {
+    background: url('/images/cchart2a-inverted.png');
+    /*animation: animated_background 300s linear;*/
+}
+
+.wow p {
+    color: white;
+}
+
+.space {
+    height: 200px;
+}
+
+.u-hidden {
+    display: none;
+}
+
+ul.social {
+    list-style-type: none;
+}
+
+.social {
+    font-size: medium;
+}
+
+.social a:before {
+    font-size: 20px;
+    vertical-align: middle;
+}
+
+.u-textAlignCenter {
+    text-align: center;
+}
+
+.u-extraPaddingY {
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+form {
+    margin-bottom: 0;
+}
+
+.colors>button {
+    height: 50px;
+    width: 50px;
+    padding: 0px;
+    margin: 10px;
+    /*border: none; */
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.colors>button.selected {
+    height: 70px;
+    width: 70px;
+    margin: 0;
+}
+
+/* modal */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -10000;
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(0, 0, 0, 0);
+    transition: background .5s ease-in-out;
+}
+
+.modal-backdrop .container {
+    color: white;
+    margin-top: 100px;
+    position: absolute;
+    top: -100vh;
+    transition: all .5s ease-out;
+}
+
+.modal-backdrop.active {
+    background-color: rgba(0, 0, 0, .85);
+    z-index: 10000;
+}
+
+.modal-backdrop .container.active {
+    top: 0;
+}
