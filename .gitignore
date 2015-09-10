@@ -31,3 +31,7 @@ node_modules/*
 # hacks
 !node_modules/db.js
 !node_modules/config.js
+
+# data
+*.IMG
+*.lbl
