@@ -1,0 +1,73 @@
+html(lang="en")
+    head
+        meta(charset="utf-8")
+        title Intergalactic Labs
+        meta(name="viewport" content="width=device-width, initial-scale=1")
+        link(href="//fonts.googleapis.com/css?family=Source+Sans+Pro|Titillium+Web" rel="stylesheet" type="text/css")
+        link(href="/normalize.css" rel="stylesheet" type="text/css")
+        link(href="/skeleton.css" rel="stylesheet" type="text/css")
+        link(href="/images/flaticon.css" rel="stylesheet" type="text/css")
+        link(href="/intergalacticlabs.css" rel="stylesheet" type="text/css")
+
+    body
+        .container
+            .row.splash
+                .twelve.columns.u-textAlignCenter
+                    div(style="background: url('/images/IntergalacticLabs3.png') no-repeat center; background-size: contain; height: 80vh; max-width: 600px; margin: auto;")
+                    .tagline(style="height: 20vh;")
+                        a.down(href="#about")
+                            div Goodbye Earth
+                            div ▼
+            .row#about
+                .twelve.columns.u-textAlignCenter
+                    h3 Researching humanity's <a href="/moon">golden</a> future
+
+        .wow(style="min-height:80vh")
+            .container
+              .row
+                  .twelve.columns
+                      h3.u-textAlignCenter(style="color:white") Want more information? <strong>Get in touch:</strong>
+              .row
+                  .four.columns
+                      ul.social
+                          li
+                              a.flaticon-twitter36(href="https://twitter.com/intergalacticlabs") twitter.com/intergalacticlabs
+                          li
+                              a.flaticon-youtube30(href="https://youtube.com/intergalacticlabs") youtube.com/intergalacticlabs
+                          li
+                              a.flaticon-facebook44(href="https://facebook.com/intergalacticlabs") facebook.com/intergalacticlabs
+                          li
+                              a.flaticon-google110(href="mailto:peter@intergalacticlabs.co") peter@intergalacticlabs.co
+                              
+              form.eight.columns(onsubmit="return feedback()")
+                  .row
+                      .six.columns
+                          input.u-full-width(type="text" name="contact-name" id="contact-name" placeholder="Name")
+                      .six.columns
+                          input.u-full-width(type="email" name="contact-email" id="contact-email" placeholder="Email")
+                  .row
+                      .twelve.columns
+                          textarea.u-full-width(name="contact-message" id="contact-message" placeholder="Message")
+                  .row
+                      .twelve.columns
+                          button(type="submit" id="contact-send") Send Message
+                          
+        .container(style="height:20vh")
+            hr
+            .row
+                .twelve.columns.u-textAlignCenter
+                    p © 2015 Intergalactic Labs
+
+        .modal-backdrop
+            .container.modal-subscribe
+                h2 How do you want to subscribe?
+                .row
+                    form.six.columns
+                        input.u-full-width(type="email" name="subscribe-email" id="subscribe-email" placeholder="Email")
+                        button.button-primary.u-full-width(type="submit" id="subscribe-submit") Subscribe
+                        button.button-inverse.u-full-width.modal-close Keep Reading
+
+
+        script(src="/konami.js")
+        script(src="/zepto.min.js")
+        script(src="/intergalacticlabs.js")

@@ -15,7 +15,11 @@ app.set('views', '.');
 app.use(express.static('static'));
 
 app.get('/', function(req, res, next) {
-    res.render('index', {h: 1});
+    res.render('soon', {h: 1});
+})
+
+app.get('/moon', function(req, res) {
+  res.sendfile(__dirname + '/tileserver/demo/leaflet.html');
 })
 
 app.post('/comment', function(req, res, next) {
