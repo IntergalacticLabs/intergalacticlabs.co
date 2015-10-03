@@ -33,6 +33,38 @@ function feedback() {
 }
 
 /**
+ * Join slack channel
+ */
+function invite() {
+  var form = event.target;
+  var data = {
+    email: $('#invite-email').val().trim()
+  };
+  $.ajax({
+    url: '/slack/invite',
+    type: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    data: JSON.stringify(data),
+    success: function(r) {
+      console.log(r);
+        if (r.err) {
+          inviteMessage(r.err);
+        } else {
+          inviteMessage(r.message);
+        }
+        form.reset();
+    }
+  })
+
+  return false;
+}
+
+function inviteMessage(message) {
+  $('#invite-message').remove();
+  $('#invite-email').after('<div id="invite-message">' + message + '</div>');
+}
+
+/**
  * Modals
  */
 $('.button-join').click(function() {

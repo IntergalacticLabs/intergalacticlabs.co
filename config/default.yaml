@@ -1,0 +1,10 @@
+app:
+  port: 8080
+jwt:
+  secret: devsecret
+  algorithm: HS256
+slack:
+  token: devtoken
+email:
+  address: peter@intergalacticlabs.co
+  password: notmyrealpassword

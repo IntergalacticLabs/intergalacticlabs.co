@@ -4,7 +4,10 @@ var favicon = require('serve-favicon');
 var db = require('db');
 var email = require('./email');
 var config = require('config');
+var request = require('request');
 var app = express();
+
+console.log(JSON.stringify(config, null, 2));
 
 app.use(bodyParser.json());
 app.use(favicon(__dirname + '/static/images/favico.png'));
@@ -15,12 +18,14 @@ app.set('views', '.');
 app.use(express.static('static'));
 
 app.get('/', function(req, res, next) {
-    res.render('soon', {h: 1});
+    res.render('soon', {h: 1})
 })
 
 app.get('/moon', function(req, res) {
-  res.sendfile(__dirname + '/tileserver/demo/leaflet.html');
+  res.sendfile(__dirname + '/tileserver/demo/leaflet.html')
 })
+
+app.use('/slack', require('./slack.js'))
 
 app.post('/comment', function(req, res, next) {
     console.log(req.body);

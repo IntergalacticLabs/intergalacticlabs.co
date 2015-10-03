@@ -20,26 +20,34 @@ html(lang="en")
                             div ▼
             .row#about
                 .twelve.columns.u-textAlignCenter
-                    h3 Researching humanity's <a href="/moon">golden</a> future
+                    h3 A community for <a href="/moon">space exploration</a>
 
         .wow(style="min-height:80vh")
             .container
               .row
                   .twelve.columns
-                      h3.u-textAlignCenter(style="color:white") Want more information? <strong>Get in touch:</strong>
+                      h3.u-textAlignCenter(style="color:white") Want to stay informed on space? <strong>Join the discussion:</strong>
               .row
-                  .four.columns
-                      ul.social
-                          li
-                              a.flaticon-twitter36(href="https://twitter.com/intergalacticlabs") twitter.com/intergalacticlabs
-                          li
-                              a.flaticon-youtube30(href="https://youtube.com/intergalacticlabs") youtube.com/intergalacticlabs
-                          li
-                              a.flaticon-facebook44(href="https://facebook.com/intergalacticlabs") facebook.com/intergalacticlabs
-                          li
-                              a.flaticon-google110(href="mailto:peter@intergalacticlabs.co") peter@intergalacticlabs.co
-                              
-                  form.eight.columns(onsubmit="return feedback()")
+                  form.invite.four.columns.offset-by-four(onsubmit="return invite()")
+                    input.u-full-width#invite-email(type="email" placeholder="Email")
+                    button.u-full-width#invite-send(type="submit") Join Slack Chat
+              .row
+                  .six.columns.offset-by-four
+                    ul.social
+                      li
+                        a.flaticon-slack(href="https://intergalacticlabs.slack.com") intergalacticlabs.slack.com
+                      li
+                        a.flaticon-twitter(href="https://twitter.com/intergalacticl") twitter.com/intergalacticl
+                      li
+                        a.flaticon-youtube(href="https://youtube.com/intergalacticlabs") youtube.com/intergalacticlabs
+                      li
+                        a.flaticon-facebook(href="https://facebook.com/intergalacticlabs") facebook.com/intergalacticlabs
+                
+              .row
+                  .twelve.columns
+                      h3.u-textAlignCenter(style="color:white") Have a specific question? <strong>Get in touch:</strong>
+              .row
+                  form.eight.columns.offset-by-two(onsubmit="return feedback()")
                       .row
                           .six.columns
                               input.u-full-width(type="text" name="contact-name" id="contact-name" placeholder="Name")
@@ -71,3 +79,11 @@ html(lang="en")
         script(src="/konami.js")
         script(src="/zepto.min.js")
         script(src="/intergalacticlabs.js")
+        script.
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+              (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+              m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+              })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+              ga('create', 'UA-67528182-1', 'auto');
+              ga('send', 'pageview');

@@ -74,6 +74,7 @@ h3 {
 .wow {
     background: url('/images/cchart2a-inverted.png');
     /*animation: animated_background 300s linear;*/
+    color: #bbb;
 }
 
 .wow p {
