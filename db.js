@@ -22,14 +22,12 @@ var invitesReady = new Promise(function (resolve, reject) {
   })
 })
 
-var moon = dirty(__dirname + '/moon.db');
-var moonReady = new Promise(function (resolve, reject) {
-  moon.on('load', function() {
-    resolve();
-  })
-})
+var moondb = dirty(__dirname + '/moon.db');
+var marsdb = dirty(__dirname + '/mars.db');
 
 module.exports = {
+    moondb: moondb,
+    marsdb: marsdb,
     comments: {
         save: function(comment){
           return commentsReady.then(function() {
