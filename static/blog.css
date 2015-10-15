@@ -1,0 +1,8 @@
+body {
+  background: url('/images/cchart2a-inverted.png');
+}
+.container {
+  background: white;
+  min-height: 100vh;
+  padding: 20px;
+}

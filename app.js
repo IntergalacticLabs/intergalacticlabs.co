@@ -6,6 +6,7 @@ var email = require('./email');
 var config = require('config');
 var request = require('request');
 var app = express();
+var blog = require('./blog/blog.js');
 
 console.log(JSON.stringify(config, null, 2));
 
@@ -15,15 +16,23 @@ app.use(require('./auth'));
 app.set('view engine', 'jade');
 app.set('views', '.');
 
+
 app.use(express.static('static'));
 
 app.get('/', function(req, res, next) {
-    res.render('soon', {h: 1})
+    res.render('soon', {posts: blog.posts})
 })
 
 app.get('/moon', function(req, res) {
   res.sendfile(__dirname + '/tileserver/demo/leaflet.html')
 })
+
+app.get('/mars', function(req, res) {
+  res.sendfile(__dirname + '/tileserver/demo/mars.html')
+})
+
+app.use('/tiles', express.static('tileserver'))
+
 
 app.use('/slack', require('./slack.js'))
 
@@ -33,6 +42,8 @@ app.post('/comment', function(req, res, next) {
     email.send('peter@intergalacticlabs.co', 'new comment', 'comment: ' + JSON.stringify(req.body));
     res.send('T_T');
 })
+
+app.use('/blog', blog.app);
 
 app.listen(config.app.port, function(err) {
     if (err) {

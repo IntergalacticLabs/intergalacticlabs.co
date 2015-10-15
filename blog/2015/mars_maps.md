@@ -1,0 +1,2 @@
+[first image]
+Finding a good map of mars is no easy task.  There’s one really good map, but it doesn’t show up on the first page of google results for “map of mars.”  The first thing you’ll notice is that there are a lot of these red/green/blue topographical maps.  The reds are the high elevations, and the blue the low elevations.  The maps are cool and interesting, but they don’t really answer a lot of the questions you have about mars.

@@ -1,0 +1,14 @@
+footer
+  div Posted #{date}
+  ul.social
+    li [twitter link]
+    li [facebook link]
+    li [hacker news link]
+  if nextpost
+    div
+      a(href='/blog' + nextpost.route) Next Post
+  if previouspost
+    div
+      a(href='/blog' + previouspost.route) Previous Post
+      
+    

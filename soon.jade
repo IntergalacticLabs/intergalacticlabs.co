@@ -44,6 +44,23 @@ html(lang="en")
                         a.flaticon-facebook(href="https://facebook.com/intergalacticlabs") facebook.com/intergalacticlabs
                 
               .row
+                .twelve.columns
+                  h3.u-textAlignCenter(style="color:white") Read the blog
+              .row
+                .four.columns.offset-by-four
+                  a(href='/blog' + posts[0].route, target="_blank")
+                    img.u-max-full-width(src=posts[0].hero style="max-height: 33vh;")
+                  h5.u-textAlignCenter
+                    a(href='/blog' + posts[0].route, target="_blank") #{posts[0].title}
+                  p #{posts[0].snippet}
+                    a(href='/blog' + posts[0].route, target="_blank") &nbsp;(read more ...)
+                //- .four.columns
+                //-   img.u-max-full-width(src="/images/spacesuit-gold.png" style="max-height: 33vh;")
+                //-   h5.u-textAlignCenter some post 2
+                //- .four.columns
+                //-   img.u-max-full-width(src="/images/leaf-fractal-gold.png" style="max-height: 33vh;")
+                //-   h5.u-textAlignCenter some post 3
+              .row
                   .twelve.columns
                       h3.u-textAlignCenter(style="color:white") Have a specific question? <strong>Get in touch:</strong>
               .row
@@ -65,15 +82,6 @@ html(lang="en")
             .row
                 .twelve.columns.u-textAlignCenter
                     p © 2015 Intergalactic Labs
-
-        .modal-backdrop
-            .container.modal-subscribe
-                h2 How do you want to subscribe?
-                .row
-                    form.six.columns
-                        input.u-full-width(type="email" name="subscribe-email" id="subscribe-email" placeholder="Email")
-                        button.button-primary.u-full-width(type="submit" id="subscribe-submit") Subscribe
-                        button.button-inverse.u-full-width.modal-close Keep Reading
 
 
         script(src="/konami.js")
