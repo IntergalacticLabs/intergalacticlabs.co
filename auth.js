@@ -21,7 +21,12 @@ app.use(function(req, res, next) {
         jwt.verify(token, config.jwt.secret, function(err, user) {
             if (err) {
                 console.error(err);
-                return next()
+                console.error('resetting auth token');
+                var auth = createUser();
+                req.user = auth.user;
+                req.user.new = true;
+                res.cookie('iluser', auth.token, {maxAge: tokenExpirationMinutes * 60 * 1000});
+                return next();
             }
 
             if (user) {
@@ -30,21 +35,27 @@ app.use(function(req, res, next) {
             }
         })
     } else {
-        var user = {
-            id: uuid.v4()
-        };
-
-        token = jwt.sign(user, config.jwt.secret, {
-            algorithm: config.jwt.algorithm,
-            expiresInMinutes: tokenExpirationMinutes
-        });
-
-        req.user = user;
-        req.user.new = true;
-        res.cookie('iluser', token, {maxAge: tokenExpirationMinutes * 60 * 1000});
-
-        next();
+      var auth = createUser();
+      req.user = auth.user;
+      req.user.new = true;
+      res.cookie('iluser', auth.token, {maxAge: tokenExpirationMinutes * 60 * 1000});
+      return next();
     }
 });
+
+function createUser() {
+  var user = {
+      id: uuid.v4()
+  };
+
+  token = jwt.sign(user, config.jwt.secret, {
+      algorithm: config.jwt.algorithm,
+      expiresInMinutes: tokenExpirationMinutes
+  });
+  return {
+    user: user,
+    token: token
+  }
+}
 
 module.exports = app;

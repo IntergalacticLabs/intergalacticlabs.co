@@ -12,12 +12,11 @@ console.log(JSON.stringify(config, null, 2));
 
 app.use(bodyParser.json());
 app.use(favicon(__dirname + '/static/images/favico.png'));
-app.use(require('./auth'));
 app.set('view engine', 'jade');
 app.set('views', '.');
 
-
 app.use(express.static('static'));
+app.use(require('./auth'));
 
 app.get('/', function(req, res, next) {
     res.render('soon', {posts: blog.posts})

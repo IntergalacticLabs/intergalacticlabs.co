@@ -39,9 +39,11 @@ app.post('/invite', function(req, res) {
     } else {
       var error = body.error;
       if (error === 'already_invited') {
-        error = 'You have already invited, check your email (' + req.body.email + ') for a message from slack!'
+        error = 'You have already been invited, check your email (' + req.body.email + ') for a message from slack!'
       } else if (error === 'invalid_email') {
         error = 'The email you entered (' + req.body.email + ') appeared to be invalid.  Care to try again?'
+      } else if (error === 'already_in_team') {
+        error = 'You have already joined the team, go to https://intergalacticlabs.slack.com and log in or reset your password if needed'
       }
 
       res.send({

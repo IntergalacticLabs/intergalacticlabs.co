@@ -1,8 +1,22 @@
 body {
   background: url('/images/cchart2a-inverted.png');
 }
+
 .container {
   background: white;
   min-height: 100vh;
   padding: 20px;
+}
+
+img {
+  max-width: 100%;
+}
+
+.caption {
+  color: #bababa;
+}
+
+ul.social li {
+  display: inline-block;
+  margin-right: 20px;
 }

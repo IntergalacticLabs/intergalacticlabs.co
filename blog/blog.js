@@ -36,11 +36,21 @@ posts.map(function(post) {
 // Create routes for each post
 posts.map(function(post, i) {
   app.get(post.route, function(req, res, next) {
+    if (process.NODE_ENV !== 'production') {
+      post.md = marked(fs.readFileSync(post.fullpath, 'utf8'));
+    }
     var data = {
       post: post,
       nextpost: posts[i+1],
       previouspost: posts[i-1],
-      date: moment(post.posted).fromNow()
+      date: moment(post.posted).fromNow(),
+      posts: posts.map(function(post) {
+        return {
+          title: post.title,
+          date: moment(post.posted).format('YYYY-MM-DD'),
+          route: post.route
+        }
+      })
     }
     res.render('post', data);
   })

@@ -1,6 +1,11 @@
 html(lang="en")
   head
     meta(charset="utf-8")
+    meta(property="og:url" content="http://intergalacticlabs.co/blog" + post.route)
+    meta(property="og:type" content="website")
+    meta(property="og:title" content=post.title)
+    meta(property="og:description" content=post.snippet)
+    meta(property="og:image" content="http://intergalacticlabs.co" + post.hero)
     title #{post.title}
     meta(name="viewport" content="width=device-width, initial-scale=1")
     link(href="//fonts.googleapis.com/css?family=Source+Sans+Pro|Titillium+Web" rel="stylesheet" type="text/css")
@@ -11,12 +16,28 @@ html(lang="en")
     link(href="/blog.css" rel="stylesheet" type="text/css")
 
   body
+    //- div#fb-root
+    //- script.
+    //-   (function(d, s, id) {
+    //-     var js, fjs = d.getElementsByTagName(s)[0];
+    //-     if (d.getElementById(id)) return;
+    //-     js = d.createElement(s); js.id = id;
+    //-     js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=470603586444111";
+    //-     fjs.parentNode.insertBefore(js, fjs);
+    //-   }(document, 'script', 'facebook-jssdk'));
     .container
       .row
-        .twelve.columns
+        .eight.columns
           include ./header.jade
           !{post.md}
           include ./footer.jade
+        .four.columns
+          a(href="/#about")
+            img(src='/images/IntergalacticLabs3.png' style="margin-top: -20px;")
+          ul
+            each post in posts
+              li
+                a(href="/blog" + post.route)= post.date + ' ' + post.title
       hr
       h3 Questions or comments?
       p 

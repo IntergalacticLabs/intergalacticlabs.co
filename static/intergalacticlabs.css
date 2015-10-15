@@ -81,6 +81,14 @@ h3 {
     color: white;
 }
 
+/* Blog posts */
+.blog-image {
+  height: 20vh;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .space {
     height: 200px;
 }
@@ -89,7 +97,7 @@ h3 {
     display: none;
 }
 
-ul.social {
+ul {
     list-style-type: none;
 }
 

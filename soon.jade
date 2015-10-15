@@ -8,6 +8,8 @@ html(lang="en")
         link(href="/skeleton.css" rel="stylesheet" type="text/css")
         link(href="/images/flaticon.css" rel="stylesheet" type="text/css")
         link(href="/intergalacticlabs.css" rel="stylesheet" type="text/css")
+        script.
+          document.createElement( "caption" );
 
     body
         .container
@@ -47,16 +49,20 @@ html(lang="en")
                 .twelve.columns
                   h3.u-textAlignCenter(style="color:white") Read the blog
               .row
-                .four.columns.offset-by-four
+                .four.columns.offset-by-two
                   a(href='/blog' + posts[0].route, target="_blank")
-                    img.u-max-full-width(src=posts[0].hero style="max-height: 33vh;")
+                    div.blog-image.u-full-width(style="background-image: url(" + posts[0].hero + ");")
                   h5.u-textAlignCenter
                     a(href='/blog' + posts[0].route, target="_blank") #{posts[0].title}
                   p #{posts[0].snippet}
                     a(href='/blog' + posts[0].route, target="_blank") &nbsp;(read more ...)
-                //- .four.columns
-                //-   img.u-max-full-width(src="/images/spacesuit-gold.png" style="max-height: 33vh;")
-                //-   h5.u-textAlignCenter some post 2
+                .four.columns
+                  a(href='/blog' + posts[1].route, target="_blank")
+                    div.blog-image.u-full-width(style="background-image: url(" + posts[1].hero + ");")
+                  h5.u-textAlignCenter
+                    a(href='/blog' + posts[1].route, target="_blank") #{posts[1].title}
+                  p #{posts[0].snippet}
+                    a(href='/blog' + posts[1].route, target="_blank") &nbsp;(read more ...)
                 //- .four.columns
                 //-   img.u-max-full-width(src="/images/leaf-fractal-gold.png" style="max-height: 33vh;")
                 //-   h5.u-textAlignCenter some post 3
