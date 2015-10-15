@@ -36,6 +36,7 @@ node_modules/*
 # data
 *.IMG
 *.lbl
+*.db
 
 # omg
 config/production.yaml
