@@ -1,5 +1,5 @@
 <!-- ![Slack logo](/images/slack_rgb_300_141.png) -->
-Intergalactic Labs has created a [community for space exploration discussion](https://intergalacticlabs.slack.com) on the chat platform Slack.  You can join the group just by submitting your email below. We won't save your email for future use or send you any email other than this invitation, ever.
+Intergalactic Labs has created a <a href="https://intergalacticlabs.slack.com" target="_blank">community for space exploration discussion</a> on the chat platform Slack.  You can join the group just by submitting your email below. We won't save your email for future use or send you any email other than this invitation, ever.
 
 <div class="row">
   <form class="invite six columns" onsubmit="return invite()">

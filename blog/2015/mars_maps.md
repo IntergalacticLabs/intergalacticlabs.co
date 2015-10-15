@@ -8,7 +8,7 @@ Finding a good map of Mars is no easy task.  There’s [one really good map from
 
 ![Earth topographical map](/images/image_1.png)
 
-Topo maps are obviously not the ideal way to picture Earth or Mars in your head.  But it is a good enough start.  From the topographical map, we can start identifying regions and orienting ourselves on an otherwise uniformly dusty planet.  Without oceans and continents, we have to rely on highlands and lowlands and massive craters to delineate Martian territories.  We can see immediately that the lowest altitude region on Mars is the big blue crater (Hellas Basin).  It’s important to know the lowest spot on Mars because we know that low altitude means higher atmospheric pressure, so that we can deduce that this large deep blue crater is a prime candidate for early human colonies.
+Topo maps are obviously not the ideal way to picture Earth or Mars in your head.  But it is a good enough start.  From the topographical map, we can start identifying regions and orienting ourselves on an otherwise uniformly dusty planet.  Without oceans and continents, we have to rely on highlands and lowlands and massive craters to delineate Martian territories.  We can see immediately that the lowest altitude region on Mars is the big blue crater (Hellas Basin).  It’s important to know the lowest spot on Mars because we know that low altitude means thicker atmosphere, so then we can deduce that this large deep blue crater is a prime candidate for early human colonies.
 
 
 #### NASA Mars Trek
