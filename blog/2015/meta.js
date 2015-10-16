@@ -4,7 +4,7 @@ module.exports = {
       file: 'mars_maps.md',
       title: 'Modern maps of Mars',
       posted: new Date('2015-10-15T13:00:22.062Z'),
-      hero: '/images/image_6.png',
+      hero: '/images/mapbox_mars.png', //'/images/image_6.png',
       snippet: 'Finding a good map of Mars is no easy task.  There’s one really good map from NASA, but it doesn’t show up on the first page of google results for “map of mars.”'
     },
     {
