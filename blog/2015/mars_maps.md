@@ -17,6 +17,11 @@ If we want to really dig in and explore the features of Mars, NASA has a really 
 
 NASA goes the extra mile to make Mars fun for everybody.  For instance, they have plotted the path taken during the film The Martian for us to see (it’s in the bookmarks tab, right [here](http://marstrek.jpl.nasa.gov/#v=0.1&x=-6.32&y=14.17&z=4&p=IAU2000%3A49900&d=&l=nomenclature_eq%2Ctrue&l=graticule_eq%2Cfalse&l=nomenclature_np%2Ctrue&l=graticule_np%2Cfalse&l=nomenclature_sp%2Ctrue&l=graticule_sp%2Cfalse&l=MC11E_HRMOSCO_COL%2Ctrue&l=HRSC_Martian_east%2Ctrue&l=ESP_040776_2115_RED_A_01_ORTHO%2Ctrue&l=ESP_042252_1930_RED_B_01_ORTHO%2Ctrue&l=ESP_042647_1760_RED_B_01_ORTHO%2Ctrue&l=martian_path%2Ctrue&l=martian_waypoints%2Ctrue)).  It would be great if they could color-match the high-res light brown image tiles, but it’s a cool map nonetheless.
 
+#### ExoMars Landing Sites
+![Where on Mars ExoMars](/images/exomars.png)
+
+You have got to experience [this interactive study](http://nmanaud.github.io/whereonmars/app/#0) of where on Mars the ESA ExoMars mission might go. The map teaches you about the design constraints that mission planners face, and gives you a visual reference for which spots are viable and lucrative for science missions.
+
 #### Mapbox Mars
 ![Mapbox Mars](/images/mapbox_mars.png)
 
