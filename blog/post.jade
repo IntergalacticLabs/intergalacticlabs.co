@@ -29,7 +29,8 @@ html(lang="en")
       .row
         .eight.columns
           include ./header.jade
-          !{post.md}
+          .content
+            !{post.md}
           include ./footer.jade
         .four.columns
           a(href="/#about")

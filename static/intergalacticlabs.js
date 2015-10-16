@@ -78,6 +78,11 @@ $('.modal-close').click(function() {
     return false;
 });
 
+// add target="_blank" for all the content links
+$(function() {
+  $('.content a').attr('target', '_blank')
+})
+
 // Smooth scroll for in page links
 $(function(){
     var target, scroll;
