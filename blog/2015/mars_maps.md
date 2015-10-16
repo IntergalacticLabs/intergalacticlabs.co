@@ -6,7 +6,7 @@ Finding a good map of Mars is no easy task.  There’s [one really good map from
 
 ![Earth topographical map](/images/image_1.png)
 
-Topo maps are obviously not the ideal way to picture Earth or Mars in your head.  But it is a good enough start.  From the topographical map, we can start identifying regions and orienting ourselves on an otherwise uniformly dusty planet.  Without oceans and continents, we have to rely on highlands and lowlands and massive craters to delineate Martian territories.  We can see immediately that the lowest altitude region on Mars is the big blue crater (Hellas Basin).  It’s important to know the lowest spot on Mars because we know that low altitude means thicker atmosphere, so then we can deduce that this large deep blue crater is a prime candidate for the first open air human colonies in the centuries to come.
+From the topographical map, we can start identifying regions and orienting ourselves on an otherwise uniformly dusty planet.  Without oceans and continents, we have to rely on highlands and lowlands and massive craters to delineate Martian territories.  We can see immediately that the lowest altitude region on Mars is the big blue crater (Hellas Basin).  Since we know that low altitude means thicker atmosphere, we can deduce that this large deep blue crater is a prime candidate for the first open air human colonies in the centuries to come.
 
 #### NASA Mars Trek
 ![NASA Mars Trek map](/images/image_2.png)
@@ -15,12 +15,12 @@ If we want to really dig in and explore the features of Mars, NASA has a really 
 
 ![The Martian route](/images/image_3.png)
 
-NASA goes the extra mile to make Mars fun for regular people.  For instance, they have plotted the path taken during the film The Martian for us to see (it’s in the bookmarks tab, right [here](http://marstrek.jpl.nasa.gov/#v=0.1&x=-6.32&y=14.17&z=4&p=IAU2000%3A49900&d=&l=nomenclature_eq%2Ctrue&l=graticule_eq%2Cfalse&l=nomenclature_np%2Ctrue&l=graticule_np%2Cfalse&l=nomenclature_sp%2Ctrue&l=graticule_sp%2Cfalse&l=MC11E_HRMOSCO_COL%2Ctrue&l=HRSC_Martian_east%2Ctrue&l=ESP_040776_2115_RED_A_01_ORTHO%2Ctrue&l=ESP_042252_1930_RED_B_01_ORTHO%2Ctrue&l=ESP_042647_1760_RED_B_01_ORTHO%2Ctrue&l=martian_path%2Ctrue&l=martian_waypoints%2Ctrue)).  It would be great if they could color-match the high-res light brown image tiles, but it’s a cool map nonetheless.
+NASA goes the extra mile to make Mars fun for everybody.  For instance, they have plotted the path taken during the film The Martian for us to see (it’s in the bookmarks tab, right [here](http://marstrek.jpl.nasa.gov/#v=0.1&x=-6.32&y=14.17&z=4&p=IAU2000%3A49900&d=&l=nomenclature_eq%2Ctrue&l=graticule_eq%2Cfalse&l=nomenclature_np%2Ctrue&l=graticule_np%2Cfalse&l=nomenclature_sp%2Ctrue&l=graticule_sp%2Cfalse&l=MC11E_HRMOSCO_COL%2Ctrue&l=HRSC_Martian_east%2Ctrue&l=ESP_040776_2115_RED_A_01_ORTHO%2Ctrue&l=ESP_042252_1930_RED_B_01_ORTHO%2Ctrue&l=ESP_042647_1760_RED_B_01_ORTHO%2Ctrue&l=martian_path%2Ctrue&l=martian_waypoints%2Ctrue)).  It would be great if they could color-match the high-res light brown image tiles, but it’s a cool map nonetheless.
 
 #### Mapbox Mars
 ![Mapbox Mars](/images/mapbox_mars.png)
 
-If you are doing modern maps, odds are you have used Mapbox before.  They have a couple really awesome sets of tiles that they released this past March in [this blog post](https://www.mapbox.com/blog/mars-maps/).  The hillshaded vector tiles are particularly cool, and we can't wait to use them in a visualization project in a later blog post here on intergalactic labs.
+If you are doing modern maps, odds are you have used [Mapbox](https://www.mapbox.com/) before.  They have a couple really awesome sets of tiles that they released this past March in [this blog post](https://www.mapbox.com/blog/mars-maps/).  The hillshaded vector tiles are particularly cool, and we can't wait to use them in a visualization project in a later blog post here on intergalactic labs.
 
 #### Stamen Design
 ![Stamen Design Mars](/images/image_6.png)
