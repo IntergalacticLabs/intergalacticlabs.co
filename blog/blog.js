@@ -15,7 +15,7 @@ var years = ['2015'].map(function(y) {
 // Get list of posts
 var posts = module.exports.posts = years.reduce(function(posts, year) {
   return posts.concat(year.posts.filter(function(p) {
-    return p.posted <= new Date();
+    return (p.posted <= new Date()) || (process.NODE_ENV != 'production');
   }))
 }, []).map(function(post) {
   post.route = moment(post.posted).format('/YYYY/MM/DD/') + post.file.split('.')[0]

@@ -16,18 +16,15 @@ module.exports = {
     },
     {
       file: 'which_mars_rover.md',
-      title: 'Modern maps of Mars',
-      posted: new Date('2015-11-03T13:00:22.062Z')
+      title: 'Which Mars rover are you?',
+      posted: new Date('2016-11-03T13:00:22.062Z')
     },
     {
-      file: 'marsmaps.md',
-      title: 'Modern maps of Mars',
-      posted: new Date('2015-11-10T13:00:22.062Z')
-    },
-    {
-      file: 'marsmaps.md',
-      title: 'Modern maps of Mars',
-      posted: new Date('2015-11-17T13:00:22.062Z')
+      file: 'mars_regions.md',
+      title: 'Tutorial: mapping regional boundaries on Mars',
+      posted: new Date('2016-10-20T13:00:22.062Z'),
+      hero: '/images/mapbox_mars.png',
+      snippet: 'How to use Mapbox Mars tiles and GeoJSON/TopoJSON to create a map of Mars with regional boundaries.'
     }
   ].map(function(post) {
     post.fullpath = __dirname + '/' + post.file;

@@ -1,0 +1,28 @@
+html
+  head
+    meta(name="viewport" content="initial-scale=1.0,  user-scalable=no")
+    meta(charset="UTF-8")
+    title Exploration Zone Builder
+    link(href="//fonts.googleapis.com/css?family=Source+Sans+Pro|Titillium+Web" rel="stylesheet" type="text/css")
+    link(href="/normalize.css" rel="stylesheet" type="text/css")
+    link(href="/skeleton.css" rel="stylesheet" type="text/css")
+    link(href="/images/flaticon.css" rel="stylesheet" type="text/css")
+    link(href="/intergalacticlabs.css" rel="stylesheet" type="text/css")
+    script(src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js')
+    link(rel="stylesheet" type="text/css" href="https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css")
+    link(rel="stylesheet" type="text/css" href="/ez/ez.css")
+  boxy
+    div#panel
+      .row
+        .bar
+          .title
+            | wow i am text
+          .face(style="background-image: url(https://www.gravatar.com/avatar/3a21356135360f9e4b72ba546863d3de.jpg?d=mm);")
+          .search ?
+      .row.edit
+        .six.columns
+          input.u-max-full-width
+    div#map
+    link(href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet')
+    script(src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js')
+    script(type="text/javascript" src="/ez/main.js")

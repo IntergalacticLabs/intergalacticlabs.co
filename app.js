@@ -27,7 +27,7 @@ app.get('/moon', function(req, res) {
 })
 
 app.get('/mars', function(req, res) {
-  res.sendfile(__dirname + '/tileserver/demo/mars.html')
+  res.render('ez/ez', {})
 })
 
 app.use('/tiles', express.static('tileserver'))
