@@ -1,6 +1,6 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoicGJyYW5kdDEiLCJhIjoiY2lmeDRsY25pM29yaXV1bTAzZXc3cnY3bSJ9.26vjnG9YuDapjlXB8ebHvg';
 var map = L.mapbox.map('map', 'mapbox.mars-satellite')
-    .setView([38.89399, -77.03659], 10);
+    .setView([5, 150], 7);
 
 // var map = L.map('map').setView([38.89399, -77.03659], 8);
 // projection not correct here...
@@ -39,3 +39,12 @@ var drawControl = new L.Control.Draw({
 map.on('draw:created', function(e) {
     featureGroup.addLayer(e.layer);
 });
+
+var coordinates = $('#coordinates');
+map.on('move', function(e) {
+  var ll = map.getCenter();
+  coordinates.text('Lon: ' + ll.lng.toPrecision(5) + ', Lat: ' + ll.lat.toPrecision(5) + ', z: ' + map.getZoom());
+})
+
+var ll = map.getCenter();
+coordinates.text('Lon: ' + ll.lng.toPrecision(5) + ', Lat: ' + ll.lat.toPrecision(5) + ', z: ' + map.getZoom());
