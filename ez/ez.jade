@@ -12,16 +12,32 @@ html
     link(rel="stylesheet" type="text/css" href="https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css")
     link(rel="stylesheet" type="text/css" href="/ez/ez.css")
   boxy
-    div#panel
+    div#panel.container
       .row
         .bar
           .title
-            | wow i am text
+            | Elysium Expedition
           .face(style="background-image: url(https://www.gravatar.com/avatar/3a21356135360f9e4b72ba546863d3de.jpg?d=mm);")
-          .search ?
+          .search
+            i.flaticon-search100
       .row.edit
-        .six.columns
-          input.u-max-full-width
+        .twelve.columns
+          input.u-full-width(type="text" name="name" id="name" placeholder="Feature Name")
+          textarea.u-full-width(name="description" id="description" placeholder="Feature Description")
+      .row.tabs
+        .twelve.columns
+          .trash
+            i.flaticon-rubbish
+          .done
+            i.flaticon-check52
+          .options
+            .row
+              .option.option2.active.first
+                | Text
+              .option.option2
+                | Color
+          
+        
     div#map
     link(href='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.css' rel='stylesheet')
     script(src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js')
