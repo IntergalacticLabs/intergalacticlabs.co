@@ -21,22 +21,55 @@ html
           .face(style="background-image: url(https://www.gravatar.com/avatar/3a21356135360f9e4b72ba546863d3de.jpg?d=mm);")
           .search
             i.flaticon-search100
-      .row.edit
+      .row.edit.text
         .twelve.columns
+          label(for="name")
           input.u-full-width(type="text" name="name" id="name" placeholder="Feature Name")
+          label(for="description")
           textarea.u-full-width(name="description" id="description" placeholder="Feature Description")
+          .row
+            label.site-type.four.columns
+              input(type="radio" name="type" value="science")
+              span.label-body Science ROI
+            label.site-type.four.columns
+              input(type="radio" name="type" value="resource")
+              span.label-body Resource ROI
+            label.site-type.four.columns
+              input(type="radio" name="type" value="landing")
+              span.label-body Landing Site
+      .row.edit.marker
+        .twelve.columns
+          .row
+            .four.columns
+              label(for="lng") Longitude
+              input.u-max-full-width(type="number" name="lng" id="lng")
+            .four.columns
+              label(for="lat") Latitude
+              input.u-max-full-width(type="number" name="lat" id="lat")
+            .four.columns.radius
+              label(for="radius") Radius
+              input.u-max-full-width(type="number" name="radius" id="radius")
+          .row
+            label Vertical Position
+              .row
+                button Move Up
+                button Move Down
+          //- .row
+          //-   label.public
+          //-     input(type="checkbox" name="public" value="checked")
+          //-     span.label-body Public
       .row.tabs
         .twelve.columns
-          .trash
-            i.flaticon-rubbish
-          .done
-            i.flaticon-check52
           .options
             .row
               .option.option2.active.first
                 | Text
               .option.option2
-                | Color
+                | Marker
+          .trash
+            i.flaticon-rubbish
+          .done
+            i.flaticon-check52
           
         
     div#map
