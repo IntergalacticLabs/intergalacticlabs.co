@@ -8,3 +8,5 @@ slack:
 email:
   address: peter@intergalacticlabs.co
   password: notmyrealpassword
+mongodb:
+  url: localhost/cosm

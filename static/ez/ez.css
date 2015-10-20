@@ -133,6 +133,16 @@ pre.ui-coordinates {
   z-index: 1000;
 }
 
+.saveText {
+  float: right;
+  width: 82px;
+  color: rgba(0, 0, 0, .5);
+  position: absolute;
+  bottom: -30px;
+  right: 0;
+  text-align: left;
+}
+
 /*
 body { margin:0; padding:0; }
 #map { position:absolute; top:0; bottom:0; width:100%; }*/

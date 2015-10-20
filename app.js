@@ -34,6 +34,16 @@ app.get('/mars', function(req, res) {
   }
 })
 
+app.post('/mars/save', function(req, res, next) {
+  console.log('saving');
+  db.features.save(req.body, function(e) {
+    if (e) {
+      console.error(e);
+    }
+  });
+  res.send(200);
+})
+
 app.use('/tiles', express.static('tileserver'))
 
 

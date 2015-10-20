@@ -4,12 +4,13 @@ var COSM = {};
 /**
  * Logging
  */
+COSM.DEBUG = true;
 function log() {
-  console.log.apply(console, arguments);
+  COSM.DEBUG && console.log.apply(console, arguments);
 }
 
 log.error = function() {
-  console.log.apply(console, arguments);
+  COSM.DEBUG && console.log.apply(console, arguments);
 }
 log.err = log.error;
 
@@ -25,12 +26,12 @@ var call = function(prop, fpath) {
     if (fpath.indexOf('.') > 0) {
       var thisvar = fpath.split('.');
       thisvar.pop();
-      thisvar.join('.');
+      thisvar = thisvar.join('.');
       thisvar = get(prop, thisvar);
     } else {
       thisvar = prop;
     }
-    f.apply(thisvar, a);
+    return f.apply(thisvar, a);
   }
 }
 
@@ -39,11 +40,12 @@ var call = function(prop, fpath) {
  * Editing stuff
  */
 COSM.editor = {};
-var currentEditingNode = null;
+var currentEditingNode = COSM.editor.currentEditingNode = null;
 
 var exitEditMode = COSM.editor.exitEditMode = function() {
   if (currentEditingNode) {
     call(currentEditingNode, 'layer.editing.disable');
+    currentEditingNode.layer.off('drag', updateprops);
   }
   currentEditingNode = null;
   $('.text').hide();
@@ -52,12 +54,21 @@ var exitEditMode = COSM.editor.exitEditMode = function() {
 }
 
 COSM.editor.create = function(e) {
+  e.layer.options.draggable = true;
+
   var id = Math.random()*10101010|0;
   e.id = id;
+
+  // cosmData is all the stuff persisted to db
   e.cosmData = {
     id: id,
-    public: true
-  }
+    public: true,
+    featuretype: 'science',
+    feature: call(e, 'layer.toGeoJSON'),
+    radius: call(e, 'layer.getRadius'),
+    layerType: e.layerType
+  };
+  COSM.db.save(e);
 }
 
 COSM.editor.edit = function(e) {
@@ -69,21 +80,68 @@ COSM.editor.edit = function(e) {
   currentEditingNode = e;
 
   call(e, 'layer.editing.enable');
-  log('editing', e);
+  log('editing', e.id);
 
+  // show and hide specific things based on the type of layer it is
   log(e.layerType);
-  var defaultprops = ['name', 'description', 'id', 'public', 'layertype', 'featuretype', 'coordinates', 'geoJSON']
+  var allprops = ['name', 'description', 'featuretype', 'lng', 'lat', 'radius'];
+  var defaultprops = ['name', 'description'];
   var shapeprops = {
-    'circle': defaultprops.concat(['color', 'radius']),
-    'marker': []
-  }
+    'circle': defaultprops.concat(['lng', 'lat', 'radius', 'featuretype']),
+    'marker': defaultprops.concat(['lng', 'lat']),
+    'rectangle': defaultprops.concat(['featuretype']),
+    'polygon': defaultprops.concat(['featuretype']),
+    'polyline': defaultprops.concat([])
+  }[e.layerType];
 
+  allprops.map(function(p) {
+    $('.' + p).hide();
+  })
 
+  shapeprops.map(function(p) {
+    $('.' + p).show();
+  })
 
-  $('.text').show();
+  updateprops();
+  e.layer.on('drag', updateprops);
+
+  $('.option-text').click();
   $('.tabs').show();
 }
 
+
+/**
+ * Property changes
+ */
+var updateprops = COSM.editor.updateprops = function() {
+  var e = currentEditingNode;
+  e.cosmData.feature = call(e, 'layer.toGeoJSON');
+  e.radius = call(e, 'layer.getRadius');
+  // fill in all the props, only show the ones required
+  $('input#name').val(e.cosmData.name || '');
+  $('textarea#description').val(e.cosmData.description || '');
+  $('input.' + e.cosmData.featuretype).attr('checked', 'checked');
+  if (e.layerType === 'circle' || e.layerType === 'marker') {
+    $('#lng').val(e.cosmData.feature.geometry.coordinates[0].toFixed(4))
+    $('#lat').val(e.cosmData.feature.geometry.coordinates[1].toFixed(4))
+    $('#radius').val((e.cosmData.radius || 0).toFixed(1))
+  }
+  COSM.db.debounceSave(e);
+}
+
+$('input#name').on('keyup', function() {
+  currentEditingNode.cosmData.name = $(this).val();
+  COSM.db.debounceSave(currentEditingNode)
+})
+
+$('#description').on('keyup', function() {
+  currentEditingNode.cosmData.description = $(this).val();
+  COSM.db.debounceSave(currentEditingNode)
+})
+
+/**
+ * Editor navigation
+ */
 $('.option-text').on('click', function() {
   $('.option-text').addClass('active');
   $('.option-marker').removeClass('active');
@@ -104,7 +162,38 @@ $('.option-marker').on('click', function() {
  * Saving stuff to db
  */
 COSM.db = {
-   save: function(e) {
-     log('saving', e.id);
-   }
- }
+  save: function(e) {
+    log('saving', e.id);
+    log(e.cosmData);
+    //  $saveText.css('transition', '')
+    //  $saveText.css('opacity', 1)
+    $.ajax({
+      url: '/mars/save',
+      type: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      data: JSON.stringify(e.cosmData),
+      success: function(r) {
+        log('saved', e.id);
+        $saveText.text('saved')
+      }
+    })
+    //  $saveText.css('transition', 'opacity 5s ease-in-out')
+    //  $saveText.css('opacity', 0)
+  },
+
+  // it's like save, but uses debounce with two seconds
+  debounceSave: function(e) {
+    log('debouncing save', e.id)
+    debounceQueue[e.id] && clearTimeout(debounceQueue[e.id])
+    debounceQueue[e.id] = setTimeout(function() {
+      COSM.db.save(e)
+      delete debounceQueue[e.id]
+    }, 1000)
+    //  $saveText.css('transition', '')
+    //  $saveText.css('opacity', 1)
+    $saveText.text('saving...')
+  },
+  debounceQueue: {}
+}
+var debounceQueue = COSM.db.debounceQueue;
+var $saveText = $('.saveText');

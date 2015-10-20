@@ -23,31 +23,31 @@ html
             i.flaticon-search100
       .row.edit.text(style="display:none")
         .twelve.columns
-          label(for="name")
-          input.u-full-width(type="text" name="name" id="name" placeholder="Feature Name")
-          label(for="description")
-          textarea.u-full-width(name="description" id="description" placeholder="Feature Description")
-          .row
+          label.name(for="name")
+          input.name.u-full-width(type="text" name="name" id="name" placeholder="Feature Name")
+          label.description(for="description")
+          textarea.description.u-full-width(name="description" id="description" placeholder="Feature Description")
+          .row.featuretype
             label.site-type.four.columns
-              input(type="radio" name="type" value="science")
+              input.science(type="radio" name="type" value="science")
               span.label-body Science ROI
             label.site-type.four.columns
-              input(type="radio" name="type" value="resource")
+              input.resource(type="radio" name="type" value="resource")
               span.label-body Resource ROI
             label.site-type.four.columns
-              input(type="radio" name="type" value="landing")
+              input.landing(type="radio" name="type" value="landing")
               span.label-body Landing Site
       .row.edit.marker(style="display:none")
         .twelve.columns
           .row
-            .four.columns
+            .four.columns.lng
               label(for="lng") Longitude
               input.u-max-full-width(type="number" name="lng" id="lng")
-            .four.columns
+            .four.columns.lat
               label(for="lat") Latitude
               input.u-max-full-width(type="number" name="lat" id="lat")
             .four.columns.radius
-              label(for="radius") Radius
+              label(for="radius") Radius (m)
               input.u-max-full-width(type="number" name="radius" id="radius")
           .row
             label Vertical Position
@@ -65,11 +65,12 @@ html
               .option.option2.active.first.option-text
                 | Text
               .option.option2.option-marker
-                | Marker
+                | Feature
           .trash
             i.flaticon-rubbish
           .done
             i.flaticon-check52
+        .saveText
           
         
     div#map

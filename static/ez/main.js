@@ -33,6 +33,18 @@ var drawControl = new L.Control.Draw({
   }, draw: {
     circle: {
       shapeOptions: circle_options
+    },
+    polyline: {
+      shapeOptions: polyline_options
+    },
+    rectangle: {
+      shapeOptions: circle_options
+    },
+    polygon: {
+      shapeOptions: circle_options
+    },
+    marker: {
+      draggable: true
     }
   }
 }).addTo(map);
@@ -61,4 +73,9 @@ coordinates.text('Lon: ' + ll.lng.toPrecision(5) + ', Lat: ' + ll.lat.toPrecisio
 map.on('click', function() {
   log('clicked map');
   COSM.editor.exitEditMode();
+})
+
+map.on('draw:edited', function(e) {
+  console.log(e);
+  debugger;
 })

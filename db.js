@@ -1,7 +1,22 @@
 var Promise = require('bluebird');
 var dirty = require('dirty');
 var uuid = require('uuid');
+var mongoose = require('mongoose');
+var config = require('config');
 
+if (mongoose.connection.readyState == 0) {
+    mongoose.connect(config.mongodb.url);
+    var db_conn = mongoose.connection;
+    db_conn.on('error', function(err) {
+        logger.log({
+            message: 'error connecting to mongodb',
+            err: err
+        });
+    });
+    db_conn.on('open', function(){
+        console.log('connected to mongodb', config.mongodb.url);
+    });
+}
 
 // var sql = requrie('sqlite3');
 // var db = new sql.Database('intergalacticlabs.sqlite3', function() {
@@ -58,5 +73,6 @@ module.exports = {
         })
       },
       LANDING_TARGET: 0
-    }
+    },
+    features: require('./features')
 };
