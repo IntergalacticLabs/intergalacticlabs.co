@@ -103,8 +103,12 @@
 }
 
 .option.first {
-  border: none;
+  border-left: none;
   margin-left: 0;
+}
+
+.option.active {
+  border-top: none;
   background-color: white;
 }
 

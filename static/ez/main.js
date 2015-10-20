@@ -10,16 +10,6 @@ var map = L.mapbox.map('map', 'mapbox.mars-satellite')
 // });
 // viking232m.addTo(map);
 
-function log() {
-  console.log.apply(console, arguments);
-}
-
-log.error = function() {
-  console.log.apply(console, arguments);
-}
-log.err = log.error;
-
-
 var featureGroup = L.featureGroup().addTo(map);
 
 // Define circle options
@@ -48,14 +38,15 @@ var drawControl = new L.Control.Draw({
 }).addTo(map);
 
 map.on('draw:created', function(e) {
-  var id = e.id = Math.random()*10000000|0;
+  COSM.editor.create(e);
   e.layer.on('click', function() {
-    log('clicked', id);
-    edit(e);
+    log('clicked', e.id);
+    COSM.editor.edit(e);
   });
   featureGroup.addLayer(e.layer);
-  log('created', id);
-  edit(e);
+  log('created', e.id);
+  COSM.db.save(e);
+  COSM.editor.edit(e);
 });
 
 var coordinates = $('#coordinates');
@@ -67,27 +58,7 @@ map.on('move', function(e) {
 var ll = map.getCenter();
 coordinates.text('Lon: ' + ll.lng.toPrecision(5) + ', Lat: ' + ll.lat.toPrecision(5) + ', z: ' + map.getZoom());
 
-var currentEditingNode = null;
-
-function exitEditMode() {
-  if (currentEditingNode) {
-    currentEditingNode.layer.editing.disable();
-  }
-  currentEditingNode = null;
-}
-
-function edit(e) {
-  if (currentEditingNode === e) {
-    log('already editing', e.id);
-    return;
-  }
-  exitEditMode();
-  currentEditingNode = e;
-  e.layer.editing.enable();
-  log('editing', e);
-}
-
 map.on('click', function() {
   log('clicked map');
-  exitEditMode();
+  COSM.editor.exitEditMode();
 })

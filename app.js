@@ -27,7 +27,11 @@ app.get('/moon', function(req, res) {
 })
 
 app.get('/mars', function(req, res) {
-  res.render('ez/ez', {})
+  if (req.query.hasOwnProperty('react')) {
+    res.render('ez/ez-react')
+  } else {
+    res.render('ez/ez', {})
+  }
 })
 
 app.use('/tiles', express.static('tileserver'))
