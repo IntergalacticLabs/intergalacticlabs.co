@@ -143,6 +143,29 @@ pre.ui-coordinates {
   text-align: left;
 }
 
+.point-image a {
+  display: inline-block;
+  height: 20px;
+  padding: 10px;
+}
+
+.point-image a.selected {
+  border: 1px solid #dcb439;
+}
+
+.color>div {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 7px;
+  margin: 10px;
+  border: 1px solid white;
+}
+
+.color>div:hover {
+  cursor: pointer;
+}
+
 /*
 body { margin:0; padding:0; }
 #map { position:absolute; top:0; bottom:0; width:100%; }*/

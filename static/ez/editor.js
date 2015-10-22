@@ -84,14 +84,14 @@ COSM.editor.edit = function(e) {
 
   // show and hide specific things based on the type of layer it is
   log(e.layerType);
-  var allprops = ['name', 'description', 'featuretype', 'lng', 'lat', 'radius'];
+  var allprops = ['name', 'description', 'featuretype', 'lng', 'lat', 'radius', 'color', 'point-image'];
   var defaultprops = ['name', 'description'];
   var shapeprops = {
-    'circle': defaultprops.concat(['lng', 'lat', 'radius', 'featuretype']),
-    'marker': defaultprops.concat(['lng', 'lat']),
-    'rectangle': defaultprops.concat(['featuretype']),
-    'polygon': defaultprops.concat(['featuretype']),
-    'polyline': defaultprops.concat([])
+    'circle': defaultprops.concat(['lng', 'lat', 'radius', 'featuretype', 'color']),
+    'marker': defaultprops.concat(['lng', 'lat', 'point-image']),
+    'rectangle': defaultprops.concat(['featuretype', 'color']),
+    'polygon': defaultprops.concat(['featuretype', 'color']),
+    'polyline': defaultprops.concat(['color'])
   }[e.layerType];
 
   allprops.map(function(p) {
@@ -137,6 +137,15 @@ $('input#name').on('keyup', function() {
 $('#description').on('keyup', function() {
   currentEditingNode.cosmData.description = $(this).val();
   COSM.db.debounceSave(currentEditingNode)
+})
+
+$('.color>div').on('click', function() {
+  var color = $(this).css("background-color");
+  currentEditingNode.layer.setStyle({
+    fillColor: color,
+    color: color
+  });
+  currentEditingNode.cosmData.color = color;
 })
 
 /**

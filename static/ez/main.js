@@ -23,7 +23,7 @@ var circle_options = {
 // Define polyline options
 // http://leafletjs.com/reference.html#polyline
 var polyline_options = {
-    color: '#000'
+    color: '#dcb439'
 };
 
 
