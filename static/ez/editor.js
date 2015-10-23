@@ -163,9 +163,15 @@ $('.featuretype input').on('click', function() {
 })
 
 $('#ez-title').on('keyup', function() {
-  // save stuff in the cookie TODO
-  $('.bar .title').text($(this).val());
+  var t = $(this).val()
+  $('.bar .title').text(t);
+  COSM.localStore.title = t;
 })
+
+if (COSM.localStore.title) {
+  $('.bar .title').text(COSM.localStore.title)
+  $('#ez-title').val(COSM.localStore.title)
+}
 
 if (COSM.localStore.email) {
   $('input.email').val(COSM.localStore.email);

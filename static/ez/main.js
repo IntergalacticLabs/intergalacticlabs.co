@@ -75,11 +75,6 @@ map.on('click', function() {
   COSM.editor.exitEditMode();
 })
 
-map.on('draw:edited', function(e) {
-  console.log(e);
-  debugger;
-})
-
 
 /**
  * Loading stuff from db
@@ -97,7 +92,8 @@ $(document).ready(function() {
     var options = {
       color: o.color,
       fillColor: o.color,
-      fillOpacity: .25
+      fillOpacity: .25,
+      draggable: true
     }
     log(o)
     var node = {
@@ -110,11 +106,42 @@ $(document).ready(function() {
         log('circle');
         node.layer = L.circle([o.feature.geometry.coordinates[1], o.feature.geometry.coordinates[0]], o.radius, options);
         break;
+      case 'marker':
+        log('marker')
+        node.layer =  L.marker([o.feature.geometry.coordinates[1], o.feature.geometry.coordinates[0]], {
+          draggable: true
+        })
+        break;
+      case 'rectangle':
+        log('rectangle')
+        var bounds = L.latLngBounds(L.latLng(o.feature.geometry.coordinates[0][0][1], o.feature.geometry.coordinates[0][0][0]),
+          L.latLng(o.feature.geometry.coordinates[0][2][1], o.feature.geometry.coordinates[0][2][0]));
+        node.layer = L.rectangle(bounds, options)
+        break;
+      case 'polygon':
+        log('polygon')
+        var line = o.feature.geometry.coordinates[0].map(function(c) {
+          // lon,lat to lat,lng
+          return L.latLng(c[1], c[0])
+        })
+        node.layer = L.polygon(line, options)
+        break;
+      case 'polyline':
+        log('polyline')
+        var line = o.feature.geometry.coordinates.map(function(c) {
+          // lon,lat to lat,lng
+          return L.latLng(c[1], c[0])
+        })
+        node.layer = L.polyline(line, {
+          color: o.color
+        })
+        break;
       default:
         log('default')
     }
 
-    featureGroup.addLayer(node.layer);
+    //featureGroup.addLayer(node.layer);
+    node.layer.addTo(featureGroup)
     node.layer.on('click', function() {
       log('clicked', node.id);
       COSM.editor.edit(node);
