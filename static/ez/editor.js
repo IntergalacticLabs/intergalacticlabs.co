@@ -146,6 +146,12 @@ $('.color>div').on('click', function() {
     color: color
   });
   currentEditingNode.cosmData.color = color;
+  COSM.db.save(currentEditingNode)
+})
+
+$('.featuretype input').on('click', function() {
+  currentEditingNode.cosmData.featuretype = $(this).val();
+  COSM.db.save(currentEditingNode)
 })
 
 /**
