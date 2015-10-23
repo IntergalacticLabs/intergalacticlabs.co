@@ -18,7 +18,7 @@ html
         .bar
           .title
             | Elysium Expedition
-          .face(style="background-image: url(https://www.gravatar.com/avatar/3a21356135360f9e4b72ba546863d3de.jpg?d=mm);")
+          .face(style="background-image: url(/images/spacesuit-profile.jpg);")
           .search
             i.flaticon-search100
       .row.edit.text(style="display:none")
@@ -69,6 +69,12 @@ html
           //-   label.public
           //-     input(type="checkbox" name="public" value="checked")
           //-     span.label-body Public
+      .row.edit.general(style="display:none")
+        .twelve.columns
+          label.ez-title(for="ez-title") Exploration Zone Name
+          input.ez-title.u-full-width(name="ez-title" id="ez-title" type="text" placeholder="Exploration Zone Title" value="Elysium Expedition")
+          label.email(for="email") Email
+          input.email.u-full-width(name="email" id="email" type="text" placeholder="exmaple@example.com")
       .row.tabs(style="display:none")
         .twelve.columns
           .options
@@ -89,5 +95,6 @@ html
     script(src='https://api.mapbox.com/mapbox.js/plugins/leaflet-draw/v0.2.2/leaflet.draw.js')
     script(src="/zepto.min.js")
     script(src="/lodash.min.js")
+    script(src="/md5.js")
     script(type="text/javascript" src="/ez/editor.js")
     script(type="text/javascript" src="/ez/main.js")

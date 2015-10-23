@@ -1,6 +1,12 @@
 // wow such oldschool
 var COSM = {};
 
+COSM.urlRoot = "http://intergalacticlabs.co";
+
+
+COSM.localStore = localStorage || {};
+
+
 /**
  * Logging
  */
@@ -50,6 +56,7 @@ var exitEditMode = COSM.editor.exitEditMode = function() {
   currentEditingNode = null;
   $('.text').hide();
   $('.marker').hide();
+  $('.general').hide();
   $('.tabs').hide();
 }
 
@@ -66,7 +73,8 @@ COSM.editor.create = function(e) {
     featuretype: 'science',
     feature: call(e, 'layer.toGeoJSON'),
     radius: call(e, 'layer.getRadius'),
-    layerType: e.layerType
+    layerType: e.layerType,
+    color: '#dcb439'
   };
   COSM.db.save(e);
 }
@@ -154,21 +162,59 @@ $('.featuretype input').on('click', function() {
   COSM.db.save(currentEditingNode)
 })
 
+$('#ez-title').on('keyup', function() {
+  // save stuff in the cookie TODO
+  $('.bar .title').text($(this).val());
+})
+
+if (COSM.localStore.email) {
+  $('input.email').val(COSM.localStore.email);
+}
+
+$('input.email').on('keyup', function() {
+  var hash = md5($(this).val())
+  log(hash)
+  $('.face').css('background-image', 'url(http://www.gravatar.com/avatar/'
+    + hash
+    + '?s=40&d='
+    + encodeURIComponent(COSM.urlRoot + '/images/spacesuit-profile.jpg')
+    + ')')
+  log(COSM.localStore.email)
+  COSM.localStore.email = $(this).val();
+})
+$('input.email').keyup();
+$('input.email').on('change', function() {
+  $(this).keyup();
+})
+
 /**
  * Editor navigation
  */
+var tabContent = ['.text', '.marker', '.general'];
+var tabs = ['.option-text', '.option-marker'];
+function openTab(content, tab) {
+  tabs.map(function(t) {
+    $(t).removeClass('active');
+  })
+  tabContent.map(function(t) {
+    $(t).hide();
+  })
+  if (tab) {
+    $(tab).addClass('active');
+  }
+  $(content).show();
+}
+
 $('.option-text').on('click', function() {
-  $('.option-text').addClass('active');
-  $('.option-marker').removeClass('active');
-  $('.marker').hide();
-  $('.text').show();
+  openTab('.text', '.option-text')
 })
 
 $('.option-marker').on('click', function() {
-  $('.option-text').removeClass('active');
-  $('.option-marker').addClass('active');
-  $('.text').hide();
-  $('.marker').show();
+  openTab('.marker', '.option-marker')
+})
+
+$('.bar').on('click', function() {
+  openTab('.general')
 })
 
 
@@ -192,6 +238,8 @@ COSM.db = {
         $saveText.text('saved')
       }
     })
+
+    COSM.localStore[e.id] = JSON.stringify(e.cosmData);
     //  $saveText.css('transition', 'opacity 5s ease-in-out')
     //  $saveText.css('opacity', 0)
   },

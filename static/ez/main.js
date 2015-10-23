@@ -79,3 +79,46 @@ map.on('draw:edited', function(e) {
   console.log(e);
   debugger;
 })
+
+
+/**
+ * Loading stuff from db
+ */
+$(document).ready(function() {
+  Object.keys(COSM.localStore).map(function(k) {
+    var o = COSM.localStore[k] || '{}';
+    try {
+      o = JSON.parse(o)
+    } catch (e) { return }
+    if (!o || !o.id) {
+      return;
+    }
+
+    var options = {
+      color: o.color,
+      fillColor: o.color,
+      fillOpacity: .25
+    }
+    log(o)
+    var node = {
+      id: o.id,
+      cosmData: o,
+      layerType: o.layerType
+    };
+    switch (o.layerType) {
+      case 'circle':
+        log('circle');
+        node.layer = L.circle([o.feature.geometry.coordinates[1], o.feature.geometry.coordinates[0]], o.radius, options);
+        break;
+      default:
+        log('default')
+    }
+
+    featureGroup.addLayer(node.layer);
+    node.layer.on('click', function() {
+      log('clicked', node.id);
+      COSM.editor.edit(node);
+    });
+
+  })
+})

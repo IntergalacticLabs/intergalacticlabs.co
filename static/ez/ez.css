@@ -15,6 +15,7 @@
 
 .face {
   background-size: cover;
+  background-repeat: no-repeat;
   width: 40px;
   height: 40px;
   float: right;
@@ -163,6 +164,10 @@ pre.ui-coordinates {
 }
 
 .color>div:hover {
+  cursor: pointer;
+}
+
+.bar:hover {
   cursor: pointer;
 }
 

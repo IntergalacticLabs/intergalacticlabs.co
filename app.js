@@ -35,7 +35,9 @@ app.get('/mars', function(req, res) {
 })
 
 app.post('/mars/save', function(req, res, next) {
-  console.log('saving');
+  console.log('saving', req.body.id, 'for user', req.user.id);
+  req.body.meta = {};
+  req.body.meta.ownerSession = req.user.id;
   db.features.upsert(req.body, function(e) {
     if (e) {
       console.error(e);

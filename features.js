@@ -30,7 +30,8 @@ var schema = new mongoose.Schema({
     updated: {
       type: Date,
       default: Date.Now
-    }
+    },
+    ownerSession: String
   }
 })
 
