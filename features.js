@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 var schema = new mongoose.Schema({
   id: {
-    type: Number,
+    type: String,
     index: true
   },
   name: String,

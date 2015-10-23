@@ -75,6 +75,9 @@ map.on('click', function() {
   COSM.editor.exitEditMode();
 })
 
+map.on('draw:drawstart', function() {
+  log('start')
+})
 
 /**
  * Loading stuff from db
@@ -111,6 +114,13 @@ $(document).ready(function() {
         node.layer =  L.marker([o.feature.geometry.coordinates[1], o.feature.geometry.coordinates[0]], {
           draggable: true
         })
+        node.layer.on('dragstart', function() {
+          log('dragstart')
+          COSM.editor.edit(node);
+        })
+        node.layer.on('drag', function() {
+          updateprops()
+        })
         break;
       case 'rectangle':
         log('rectangle')
@@ -142,6 +152,7 @@ $(document).ready(function() {
 
     //featureGroup.addLayer(node.layer);
     node.layer.addTo(featureGroup)
+    node.layer.on('edit', updateprops);
     node.layer.on('click', function() {
       log('clicked', node.id);
       COSM.editor.edit(node);

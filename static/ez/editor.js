@@ -6,6 +6,15 @@ COSM.urlRoot = "http://intergalacticlabs.co";
 
 COSM.localStore = localStorage || {};
 
+if (!COSM.localStore.user) {
+  COSM.localStore.user = (Math.random()*8e11).toString(32);
+}
+
+// load a session
+if (!COSM.localStore.session) {
+  COSM.localStore.session = (Math.random()*8e11).toString(32);
+}
+
 
 /**
  * Logging
@@ -51,7 +60,6 @@ var currentEditingNode = COSM.editor.currentEditingNode = null;
 var exitEditMode = COSM.editor.exitEditMode = function() {
   if (currentEditingNode) {
     call(currentEditingNode, 'layer.editing.disable');
-    currentEditingNode.layer.off('drag', updateprops);
   }
   currentEditingNode = null;
   $('.text').hide();
@@ -60,11 +68,19 @@ var exitEditMode = COSM.editor.exitEditMode = function() {
   $('.tabs').hide();
 }
 
+
 COSM.editor.create = function(e) {
   e.layer.options.draggable = true;
 
-  var id = Math.random()*10101010|0;
+  var id = COSM.localStore.user + '__' + (Math.random()*8e11).toString(32);
   e.id = id;
+
+  if (e.layerType === 'marker') {
+    e.layer.on('drag', function() {
+      COSM.editor.edit(e);
+    })
+  }
+  e.layer.on('edit', updateprops);
 
   // cosmData is all the stuff persisted to db
   e.cosmData = {
@@ -96,7 +112,7 @@ COSM.editor.edit = function(e) {
   var defaultprops = ['name', 'description'];
   var shapeprops = {
     'circle': defaultprops.concat(['lng', 'lat', 'radius', 'featuretype', 'color']),
-    'marker': defaultprops.concat(['lng', 'lat', 'point-image']),
+    'marker': defaultprops.concat(['lng', 'lat', 'point-image', 'featuretype']),
     'rectangle': defaultprops.concat(['featuretype', 'color']),
     'polygon': defaultprops.concat(['featuretype', 'color']),
     'polyline': defaultprops.concat(['color'])
@@ -111,11 +127,11 @@ COSM.editor.edit = function(e) {
   })
 
   updateprops();
-  e.layer.on('drag', updateprops);
 
   $('.option-text').click();
   $('.tabs').show();
 }
+
 
 
 /**
@@ -124,7 +140,7 @@ COSM.editor.edit = function(e) {
 var updateprops = COSM.editor.updateprops = function() {
   var e = currentEditingNode;
   e.cosmData.feature = call(e, 'layer.toGeoJSON');
-  e.radius = call(e, 'layer.getRadius');
+  e.cosmData.radius = call(e, 'layer.getRadius');
   // fill in all the props, only show the ones required
   $('input#name').val(e.cosmData.name || '');
   $('textarea#description').val(e.cosmData.description || '');
@@ -193,6 +209,7 @@ $('input.email').on('change', function() {
   $(this).keyup();
 })
 
+
 /**
  * Editor navigation
  */
@@ -223,6 +240,18 @@ $('.bar').on('click', function() {
   openTab('.general')
 })
 
+$('.trash').on('click', function() {
+  var id = currentEditingNode.id;
+  // fuck it.  bring on the coupling
+  featureGroup.removeLayer(currentEditingNode.layer)
+  delete COSM.localStore[id];
+  COSM.db.delete(currentEditingNode);
+  exitEditMode()
+})
+
+$('.done').on('click', function() {
+  exitEditMode();
+})
 
 
 /**
@@ -262,7 +291,10 @@ COSM.db = {
     //  $saveText.css('opacity', 1)
     $saveText.text('saving...')
   },
-  debounceQueue: {}
+  debounceQueue: {},
+  delete: function(e) {
+    debounceQueue[e.id] && clearTimeout(debounceQueue[e.id])
+  }
 }
 var debounceQueue = COSM.db.debounceQueue;
 var $saveText = $('.saveText');
