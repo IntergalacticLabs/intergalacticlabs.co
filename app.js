@@ -26,7 +26,7 @@ app.get('/moon', function(req, res) {
   res.sendfile(__dirname + '/tileserver/demo/leaflet.html')
 })
 
-app.get('/mars', function(req, res) {
+app.get('/mars*', function(req, res) {
   if (req.query.hasOwnProperty('react')) {
     res.render('ez/ez-react')
   } else {

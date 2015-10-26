@@ -6,6 +6,37 @@ COSM.urlRoot = "http://intergalacticlabs.co";
 
 COSM.localStore = localStorage || {};
 
+COSM.markers = {
+  yellow: {
+    iconUrl: '/images/maki/marker-yellow-24.svg',
+    iconAnchor: L.point(12, 21)
+  },
+  blue: {
+    iconUrl: '/images/maki/marker-blue-24.svg',
+    iconAnchor: L.point(12, 21)
+  },
+  white: {
+    iconUrl: '/images/maki/marker-white-24.svg',
+    iconAnchor: L.point(12, 21)
+  },
+  red: {
+    iconUrl: '/images/maki/marker-red-24.svg',
+    iconAnchor: L.point(12, 21)
+  },
+  black: {
+    iconUrl: '/images/maki/marker-24.svg',
+    iconAnchor: L.point(12, 21)
+  },
+  base: {
+    iconUrl: '/images/maki/base-yellow-24.svg',
+    iconAnchor: L.point(12, 12)
+  },
+  landing: {
+    iconUrl: '/images/maki/rocket-yellow-24.svg',
+    iconAnchor: L.point(12, 12)
+  }
+};
+
 if (!COSM.localStore.user) {
   COSM.localStore.user = (Math.random()*8e11).toString(32);
 }
@@ -76,8 +107,11 @@ COSM.editor.create = function(e) {
   e.id = id;
 
   if (e.layerType === 'marker') {
-    e.layer.on('drag', function() {
+    e.layer.on('dragstart', function() {
       COSM.editor.edit(e);
+    })
+    e.layer.on('drag', function() {
+      updateprops();
     })
   }
   e.layer.on('edit', updateprops);
@@ -90,7 +124,8 @@ COSM.editor.create = function(e) {
     feature: call(e, 'layer.toGeoJSON'),
     radius: call(e, 'layer.getRadius'),
     layerType: e.layerType,
-    color: '#dcb439'
+    color: '#dcb439',
+    markerIcon: COSM.markers.blue
   };
   COSM.db.save(e);
 }
@@ -102,6 +137,10 @@ COSM.editor.edit = function(e) {
   }
   exitEditMode();
   currentEditingNode = e;
+
+  if (currentEditingNode.layerType !== 'marker') {
+    $('.leaflet-marker-icon').removeClass('selected');
+  }
 
   call(e, 'layer.editing.enable');
   log('editing', e.id);
@@ -175,6 +214,12 @@ $('.color>div').on('click', function() {
 
 $('.featuretype input').on('click', function() {
   currentEditingNode.cosmData.featuretype = $(this).val();
+  COSM.db.save(currentEditingNode)
+})
+
+$('a.marker').on('click', function() {
+  var icon = currentEditingNode.cosmData.markerIcon = COSM.markers[$(this).attr('data-marker')];
+  currentEditingNode.layer.setIcon(L.icon(icon));
   COSM.db.save(currentEditingNode)
 })
 

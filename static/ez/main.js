@@ -26,6 +26,7 @@ var polyline_options = {
     color: '#dcb439'
 };
 
+var markers = COSM.markers;
 
 var drawControl = new L.Control.Draw({
   edit: {
@@ -44,7 +45,11 @@ var drawControl = new L.Control.Draw({
       shapeOptions: circle_options
     },
     marker: {
-      draggable: true
+      draggable: true,
+      icon: L.icon({
+        iconUrl: '/images/maki/marker-blue-24.svg',
+        iconAnchor: L.point(12, 21)
+      })
     }
   }
 }).addTo(map);
@@ -73,6 +78,7 @@ coordinates.text('Lon: ' + ll.lng.toPrecision(5) + ', Lat: ' + ll.lat.toPrecisio
 map.on('click', function() {
   log('clicked map');
   COSM.editor.exitEditMode();
+  $('.leaflet-marker-icon').removeClass('selected');
 })
 
 map.on('draw:drawstart', function() {
@@ -112,7 +118,11 @@ $(document).ready(function() {
       case 'marker':
         log('marker')
         node.layer =  L.marker([o.feature.geometry.coordinates[1], o.feature.geometry.coordinates[0]], {
-          draggable: true
+          draggable: true,
+          icon: L.icon({
+            iconUrl: node.cosmData.markerIcon.iconUrl,
+            iconAnchor: L.point([node.cosmData.markerIcon.iconAnchor.x, node.cosmData.markerIcon.iconAnchor.y])
+          })
         })
         node.layer.on('dragstart', function() {
           log('dragstart')
@@ -120,6 +130,10 @@ $(document).ready(function() {
         })
         node.layer.on('drag', function() {
           updateprops()
+        })
+        node.layer.on('click', function() {
+          $('.leaflet-marker-icon').removeClass('selected');
+          $(this._icon).addClass('selected');
         })
         break;
       case 'rectangle':

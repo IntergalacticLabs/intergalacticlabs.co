@@ -167,8 +167,25 @@ pre.ui-coordinates {
   cursor: pointer;
 }
 
+a.marker {
+  background: url('/images/bg-mars.png');
+  height: 24px;
+  width: 24px;
+  border-radius: 22px;
+  margin-right: 8px;
+}
+
+a.marker:hover {
+  cursor: pointer;
+}
+
 .bar:hover {
   cursor: pointer;
+}
+
+.leaflet-marker-icon.selected {
+  border: 1px solid rgba(255, 255, 255, .5);
+  border-radius: 100px;
 }
 
 /*

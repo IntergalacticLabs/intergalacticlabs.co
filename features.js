@@ -16,6 +16,7 @@ var schema = new mongoose.Schema({
   },
   color: String,
   layerType: String,
+  markerIcon: {},
   public: {
     type: Boolean,
     default: true
@@ -31,7 +32,12 @@ var schema = new mongoose.Schema({
       type: Date,
       default: Date.Now
     },
-    ownerSession: String
+    ownerSession: String,
+    ownerEmail: String,
+    sessions: [{
+      type: String,
+      index: true
+    }]
   }
 })
 

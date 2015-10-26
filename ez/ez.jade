@@ -34,9 +34,6 @@ html
             label.site-type.four.columns
               input.resource(type="radio" name="type" value="resource")
               span.label-body Resource ROI
-            label.site-type.four.columns
-              input.landing(type="radio" name="type" value="landing")
-              span.label-body Landing Site
       .row.edit.marker(style="display:none")
         .twelve.columns
           .row
@@ -50,16 +47,27 @@ html
               label(for="radius") Radius (m)
               input.u-max-full-width(type="number" name="radius" id="radius")
           .row.point-image
-            a.plain
-              img(src="images/building15.png", alt="")
-            a.plain
-              img(src="images/building15.png", alt="")
+            label Marker
+            a.marker(data-marker="yellow")
+              img.marker(src="/images/maki/marker-yellow-24.svg", alt="")
+            a.marker(data-marker="blue")
+              img.marker(src="/images/maki/marker-blue-24.svg", alt="")
+            a.marker(data-marker="white")
+              img.marker(src="/images/maki/marker-white-24.svg", alt="")
+            a.marker(data-marker="red")
+              img.marker(src="/images/maki/marker-red-24.svg", alt="")
+            a.marker(data-marker="black")
+              img.marker(src="/images/maki/marker-24.svg", alt="")
+            a.marker(data-marker="base")
+              img.marker(src="/images/maki/base-yellow-24.svg", alt="")
+            a.marker(data-marker="landing")
+              img.marker(src="/images/maki/rocket-yellow-24.svg", alt="")
           .row.color
             .yellow(style="background-color: #dcb439; border: 1px solid #dcb439")
             .blue(style="background-color: #6e98bc; border: 1px solid #6e98bc")
-            .white(style="background-color: #eee; border: 1px solid #999")
+            .white(style="background-color: #e0e0e0; border: 1px solid #909090")
             .red(style="background-color: #dc4f39; border: 1px solid #dc4f39")
-            .red(style="background-color: #000; border: 1px solid #000")
+            .black(style="background-color: #000; border: 1px solid #000")
           .row
             label Vertical Position
               .row
