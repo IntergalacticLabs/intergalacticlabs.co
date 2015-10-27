@@ -73,7 +73,7 @@ app.get('/mars*', function(req, res) {
   if (req.query.hasOwnProperty('react')) {
     res.render('ez/ez-react')
   } else {
-    res.render('ez/ez', {})
+    res.render('ez/ez', {DEBUG: process.env.NODE_ENV !== 'production'})
   }
 })
 

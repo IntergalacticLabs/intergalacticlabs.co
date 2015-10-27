@@ -1,3 +1,6 @@
+console.log('so yeah, this project got out of hand pretty quickly (⊙_⊙)')
+console.log('git clone git@github.com:IntergalacticLabs/intergalacticlabs.co.git')
+
 // wow such oldschool
 var COSM = {};
 
@@ -40,7 +43,6 @@ COSM.markers = {
 /**
  * Logging
  */
-COSM.DEBUG = true;
 function log() {
   COSM.DEBUG && console.log.apply(console, arguments);
 }
@@ -259,6 +261,10 @@ COSM.editor.loadFromLocalStore = function() {
         COSM.editor.zone = node;
         $('#ez-lng').val(node.layer.getLatLng().lng);
         $('#ez-lat').val(node.layer.getLatLng().lat);
+        map.setView([
+          node.layer.getLatLng().lat,
+          node.layer.getLatLng().lng
+        ], 9);
         break;
       case 'marker':
         log('marker')
