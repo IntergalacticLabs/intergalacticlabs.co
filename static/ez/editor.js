@@ -211,6 +211,17 @@ $(document).ready(function() {
 COSM.editor.loadFromLocalStore = function() {
   log('loadFromLocalStore');
   featureGroup.clearLayers();
+  $('.bar .title').text(COSM.localStore.title);
+  $('input.ez-title').val(COSM.localStore.title);
+  $('a.link').text('http://intergalacticlabs.co/mars/' + COSM.localStore.zone);
+  $('a.link').attr('href', 'http://intergalacticlabs.co/mars/' + COSM.localStore.zone);
+  $('input.email').val(COSM.localStore.email);
+  $('input.email').keyup();
+  window.history.pushState({}, "", "/mars/" + COSM.localStore.zone)
+  updateZone({
+    id: COSM.localStore.zone,
+    title: COSM.localStore.title
+  });
   Object.keys(COSM.localStore).map(function(k) {
     if (k.indexOf(COSM.localStore.zone) < 0) { return }
     var o = COSM.localStore[k] || '{}';
@@ -447,12 +458,10 @@ $('.ez-new').click(function() {
   }
   COSM.localStore.zone = Math.random().toString(36).slice(2);
   COSM.localStore.title = "New Exploration Zone";
-  $('label.ez-title').text('New Exploration Zone');
   updateZone({
     id: COSM.localStore.zone,
     title: COSM.localStore.title
   });
-  $('.ez-title').val(COSM.localStore.title);
   var zoneEditableLayer = {
     layer: L.circle([5, 150], 100000, {
       color: '#dcb439',
@@ -465,6 +474,11 @@ $('.ez-new').click(function() {
   window.history.pushState({}, "", "/mars/" + COSM.localStore.zone)
   COSM.editor.loadFromLocalStore();
   COSM.db.debounceSaveZone();
+})
+
+$('select.ez-load').change(function() {
+  log('load', $(this).val())
+  COSM.db.loadZone($(this).val());
 })
 
 /**
