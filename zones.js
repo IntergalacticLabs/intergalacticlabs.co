@@ -5,18 +5,9 @@ var schema = new mongoose.Schema({
     index: true
   },
   name: String,
+  email: String,
+  user: String,
   description: String,
-  featuretype: {
-    type: String,
-    index: true
-  },
-  feature: {
-    geometry: {},
-    properties: {}
-  },
-  color: String,
-  layerType: String,
-  markerIcon: {},
   public: {
     type: Boolean,
     default: true
@@ -33,18 +24,12 @@ var schema = new mongoose.Schema({
       default: Date.Now
     },
     ownerSession: String,
-    ownerIP: String,
-    email: String,
-    user: String, // user from browser
-    zone: {
-      type: String, // zone from browser
-      index: true
-    }
+    ownerIP: String
   }
 })
 
 schema.index({
-  'feature.geometry': '2dsphere'
+  'zone.geometry': '2dsphere'
 })
 
 schema.pre('save', function(next) {
@@ -52,11 +37,11 @@ schema.pre('save', function(next) {
   next();
 })
 
-var features = module.exports = mongoose.model('Feature', schema, 'features');
+var zones = module.exports = mongoose.model('Zone', schema, 'zones');
 
 //
-features.upsert = function(feature, cb) {
-  features.update({id: feature.id}, feature, {upsert: true}, function(e, r) {
+zones.upsert = function(zone, cb) {
+  zones.update({id: zone.id}, zone, {upsert: true}, function(e, r) {
     if (e) return cb(e);
     cb(null, r);
   })

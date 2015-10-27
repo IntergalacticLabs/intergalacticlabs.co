@@ -26,18 +26,14 @@ app.get('/moon', function(req, res) {
   res.sendfile(__dirname + '/tileserver/demo/leaflet.html')
 })
 
-app.get('/mars*', function(req, res) {
-  if (req.query.hasOwnProperty('react')) {
-    res.render('ez/ez-react')
-  } else {
-    res.render('ez/ez', {})
-  }
-})
 
 app.post('/mars/save', function(req, res, next) {
   console.log('saving', req.body.id, 'for user', req.user.id);
   req.body.meta = {};
   req.body.meta.ownerSession = req.user.id;
+  req.body.meta.user = req.body.id.split('.')[0]
+  req.body.meta.zone = req.body.id.split('.')[1]
+  req.body.meta.ownerIP = req.ip;
   db.features.upsert(req.body, function(e) {
     if (e) {
       console.error(e);
@@ -46,8 +42,40 @@ app.post('/mars/save', function(req, res, next) {
   res.send(200);
 })
 
-app.use('/tiles', express.static('tileserver'))
+// gets a subset of features
+app.get('/mars/zone/:zone', function(req, res, next) {
+  db.zones.findOne({id: req.params.zone}, function(e, zone) {
+    db.features.find({'meta.zone': req.params.zone}, function(e, r) {
+      res.send({
+        zone: zone,
+        features: r
+      })
+    })
+  })
+})
 
+// saves a session
+app.post('/mars/zone', function(req, res, next) {
+  console.log('saving session', req.body.id);
+  req.body.meta = {};
+  req.body.meta.ownerSession = req.user.id;
+  req.body.meta.ownerIP = req.ip;
+  db.zones.upsert(req.body, function(e) {
+    if (e) {
+      console.error(e);
+    }
+  })
+  res.send(200);
+})
+
+
+app.get('/mars*', function(req, res) {
+  if (req.query.hasOwnProperty('react')) {
+    res.render('ez/ez-react')
+  } else {
+    res.render('ez/ez', {})
+  }
+})
 
 app.use('/slack', require('./slack.js'))
 

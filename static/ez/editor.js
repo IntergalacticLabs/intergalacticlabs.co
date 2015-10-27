@@ -3,8 +3,8 @@ var COSM = {};
 
 COSM.urlRoot = "http://intergalacticlabs.co";
 
-
 COSM.localStore = localStorage || {};
+COSM.localStore.loadedZones = COSM.localStore.loadedZones || '';
 
 COSM.markers = {
   yellow: {
@@ -36,16 +36,6 @@ COSM.markers = {
     iconAnchor: L.point(12, 12)
   }
 };
-
-if (!COSM.localStore.user) {
-  COSM.localStore.user = (Math.random()*8e11).toString(32);
-}
-
-// load a session
-if (!COSM.localStore.session) {
-  COSM.localStore.session = (Math.random()*8e11).toString(32);
-}
-
 
 /**
  * Logging
@@ -103,7 +93,7 @@ var exitEditMode = COSM.editor.exitEditMode = function() {
 COSM.editor.create = function(e) {
   e.layer.options.draggable = true;
 
-  var id = COSM.localStore.user + '__' + (Math.random()*8e11).toString(32);
+  var id = COSM.localStore.user + '.' +  COSM.localStore.zone + '.' + Math.random().toString(36).slice(2)
   e.id = id;
 
   if (e.layerType === 'marker') {
@@ -147,9 +137,10 @@ COSM.editor.edit = function(e) {
 
   // show and hide specific things based on the type of layer it is
   log(e.layerType);
-  var allprops = ['name', 'description', 'featuretype', 'lng', 'lat', 'radius', 'color', 'point-image'];
-  var defaultprops = ['name', 'description'];
+  var allprops = ['name', 'description', 'featuretype', 'lng', 'lat', 'radius', 'color', 'point-image', 'tabs'];
+  var defaultprops = ['name', 'description', 'tabs'];
   var shapeprops = {
+    'zone': ['general'],
     'circle': defaultprops.concat(['lng', 'lat', 'radius', 'featuretype', 'color']),
     'marker': defaultprops.concat(['lng', 'lat', 'point-image', 'featuretype']),
     'rectangle': defaultprops.concat(['featuretype', 'color']),
@@ -168,10 +159,140 @@ COSM.editor.edit = function(e) {
   updateprops();
 
   $('.option-text').click();
-  $('.tabs').show();
 }
 
 
+// load a zone
+COSM.editor.init = function() {
+  if (!COSM.localStore.user) {
+    COSM.localStore.user = Math.random().toString(36).slice(2);
+  }
+
+  if (typeof document.location.pathname.split('/mars/')[1] !== 'undefined') {
+    var zone = document.location.pathname.split('/mars/')[1];
+    if (COSM.localStore.zone === zone) {
+      COSM.editor.loadFromLocalStore();
+    } else {
+      COSM.localStore.zone = zone;
+      COSM.db.loadZone(COSM.localStore.zone, function() {
+        log('loaded zone', COSM.localStore.zone);
+        COSM.editor.loadFromLocalStore();
+      })
+    }
+  } else if (typeof COSM.localStore.zone !== "undefined") {
+    log("loading", COSM.localStore.zone);
+    window.history.pushState({}, "", "/mars/" + COSM.localStore.zone)
+    COSM.editor.loadFromLocalStore();
+  } else {
+    $('.ez-new').click()
+  }
+
+  var link = 'http://intergalacticlabs.co/mars/' + COSM.localStore.zone
+  $('a.link').attr('href', link)
+  $('a.link').text(link)
+}
+$(document).ready(function() {
+  log('init');
+  COSM.editor.init();
+})
+
+COSM.editor.loadFromLocalStore = function() {
+  log('loadFromLocalStore');
+  Object.keys(COSM.localStore).map(function(k) {
+    var o = COSM.localStore[k] || '{}';
+    try {
+      o = JSON.parse(o)
+    } catch (e) { return }
+    if (!o || !o.id) {
+      return;
+    }
+
+    var options = {
+      color: o.color,
+      fillColor: o.color,
+      fillOpacity: .25,
+      draggable: true
+    }
+    log(o)
+    var node = {
+      id: o.id,
+      cosmData: o,
+      layerType: o.layerType
+    };
+    switch (o.layerType) {
+      case 'circle':
+        log('circle');
+        node.layer = L.circle([o.feature.geometry.coordinates[1], o.feature.geometry.coordinates[0]], o.radius, options);
+        break;
+      case 'zone':
+        log('zone');
+        node.layer = L.circle([o.feature.geometry.coordinates[1], o.feature.geometry.coordinates[0]], o.radius, {
+          color: o.color,
+          fill: false
+        });
+        COSM.editor.zone = node;
+        $('#ez-lng').val(node.layer.getLatLng().lng);
+        $('#ez-lat').val(node.layer.getLatLng().lat);
+        break;
+      case 'marker':
+        log('marker')
+        node.layer =  L.marker([o.feature.geometry.coordinates[1], o.feature.geometry.coordinates[0]], {
+          draggable: true,
+          icon: L.icon({
+            iconUrl: node.cosmData.markerIcon.iconUrl,
+            iconAnchor: L.point([node.cosmData.markerIcon.iconAnchor.x, node.cosmData.markerIcon.iconAnchor.y])
+          })
+        })
+        node.layer.on('dragstart', function() {
+          log('dragstart')
+          COSM.editor.edit(node);
+        })
+        node.layer.on('drag', function() {
+          updateprops()
+        })
+        node.layer.on('click', function() {
+          $('.leaflet-marker-icon').removeClass('selected');
+          $(this._icon).addClass('selected');
+        })
+        break;
+      case 'rectangle':
+        log('rectangle')
+        var bounds = L.latLngBounds(L.latLng(o.feature.geometry.coordinates[0][0][1], o.feature.geometry.coordinates[0][0][0]),
+          L.latLng(o.feature.geometry.coordinates[0][2][1], o.feature.geometry.coordinates[0][2][0]));
+        node.layer = L.rectangle(bounds, options)
+        break;
+      case 'polygon':
+        log('polygon')
+        var line = o.feature.geometry.coordinates[0].map(function(c) {
+          // lon,lat to lat,lng
+          return L.latLng(c[1], c[0])
+        })
+        node.layer = L.polygon(line, options)
+        break;
+      case 'polyline':
+        log('polyline')
+        var line = o.feature.geometry.coordinates.map(function(c) {
+          // lon,lat to lat,lng
+          return L.latLng(c[1], c[0])
+        })
+        node.layer = L.polyline(line, {
+          color: o.color
+        })
+        break;
+      default:
+        log('default')
+    }
+
+    //featureGroup.addLayer(node.layer);
+    node.layer.addTo(featureGroup)
+    node.layer.on('edit', updateprops);
+    node.layer.on('click', function() {
+      log('clicked', node.id);
+      COSM.editor.edit(node);
+    });
+
+  })
+}
 
 /**
  * Property changes
@@ -188,6 +309,10 @@ var updateprops = COSM.editor.updateprops = function() {
     $('#lng').val(e.cosmData.feature.geometry.coordinates[0].toFixed(4))
     $('#lat').val(e.cosmData.feature.geometry.coordinates[1].toFixed(4))
     $('#radius').val((e.cosmData.radius || 0).toFixed(1))
+  }
+  if (e.layerType === 'zone') {
+    $('#ez-lng').val(e.cosmData.feature.geometry.coordinates[0].toFixed(4))
+    $('#ez-lat').val(e.cosmData.feature.geometry.coordinates[1].toFixed(4))
   }
   COSM.db.debounceSave(e);
 }
@@ -227,11 +352,14 @@ $('#ez-title').on('keyup', function() {
   var t = $(this).val()
   $('.bar .title').text(t);
   COSM.localStore.title = t;
+  COSM.db.debounceSaveZone();
 })
 
 if (COSM.localStore.title) {
   $('.bar .title').text(COSM.localStore.title)
   $('#ez-title').val(COSM.localStore.title)
+} else {
+  COSM.localStore.title = $('#ez-title').val();
 }
 
 if (COSM.localStore.email) {
@@ -248,17 +376,49 @@ $('input.email').on('keyup', function() {
     + ')')
   log(COSM.localStore.email)
   COSM.localStore.email = $(this).val();
+  COSM.db.debounceSaveZone();
 })
-$('input.email').keyup();
+$(document).ready(function() {
+  $('input.email').keyup();
+})
 $('input.email').on('change', function() {
   $(this).keyup();
 })
 
+$(document).on('change', '#ez-lng, #ez-lat', function() {
+  COSM.editor.zone.layer.setLatLng(L.latLng(
+    parseFloat($('#ez-lng').val()),
+    parseFloat($('#ez-lat').val())
+  ))
+  COSM.db.debounceSave(e);
+})
+
+$('.ez-new').click(function() {
+  if (typeof COSM.localStore.zone !== 'undefined'
+      && COSM.localStore.loadedZones.indexOf(COSM.localStore.zone) < 0) {
+    COSM.localStore.loadedZones += COSM.localStore.zone;
+  }
+  COSM.localStore.zone = Math.random().toString(36).slice(2);
+  COSM.localStore.title = "New Exploration Zone";
+  $('.ez-title').val(COSM.localStore.title);
+  var zoneEditableLayer = {
+    layer: L.circle([5, 150], 100000, {
+      color: '#dcb439',
+      fill: false
+    }),
+    layerType: 'zone',
+    color: '#dcb439'
+  }
+  COSM.editor.create(zoneEditableLayer);
+  window.history.pushState({}, "", "/mars/" + COSM.localStore.zone)
+  COSM.editor.loadFromLocalStore();
+  COSM.db.debounceSaveZone();
+})
 
 /**
  * Editor navigation
  */
-var tabContent = ['.text', '.marker', '.general'];
+var tabContent = ['.text', '.marker'];
 var tabs = ['.option-text', '.option-marker'];
 function openTab(content, tab) {
   tabs.map(function(t) {
@@ -282,7 +442,7 @@ $('.option-marker').on('click', function() {
 })
 
 $('.bar').on('click', function() {
-  openTab('.general')
+  $('.general').show();
 })
 
 $('.trash').on('click', function() {
@@ -339,6 +499,52 @@ COSM.db = {
   debounceQueue: {},
   delete: function(e) {
     debounceQueue[e.id] && clearTimeout(debounceQueue[e.id])
+  },
+  loadZone: function(zone) {
+    $.ajax({
+      url: '/mars/zone/' + zone,
+      type: 'GET',
+      headers: {'Content-Type': 'application/json'},
+      success: function(r) {
+        log('loaded', zone);
+        COSM.localStore.zone = zone;
+        COSM.localStore.user = r.zone.user;
+        COSM.localStore.email = r.zone.email;
+        COSM.localStore.title = r.zone.name;
+        r.features.map(function(f) {
+          COSM.localStore[f.id] = JSON.stringify(f);
+        })
+        COSM.editor.loadFromLocalStore();
+      }
+    })
+
+  },
+  saveZone: function() {
+    $.ajax({
+      url: '/mars/zone',
+      type: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      data: JSON.stringify({
+        id: COSM.localStore.zone,
+        name: COSM.localStore.title,
+        email: COSM.localStore.email,
+        user: COSM.localStore.user
+      }),
+      success: function(r) {
+        log('saved', COSM.localStore.zone)
+        $saveText.text('saved')
+      }
+    })
+  },
+  debounceSaveZone: function () {
+    var zone = COSM.localStore.zone;
+    log('debouncing save zone')
+    debounceQueue[zone] && clearTimeout(debounceQueue[zone])
+    debounceQueue[zone] = setTimeout(function() {
+      COSM.db.saveZone();
+      delete debounceQueue[zone]
+    }, 1000)
+    $saveText.text('saving...')
   }
 }
 var debounceQueue = COSM.db.debounceQueue;

@@ -1,6 +1,6 @@
 L.mapbox.accessToken = 'pk.eyJ1IjoicGJyYW5kdDEiLCJhIjoiY2lmeDRsY25pM29yaXV1bTAzZXc3cnY3bSJ9.26vjnG9YuDapjlXB8ebHvg';
 var map = L.mapbox.map('map', 'mapbox.mars-satellite')
-    .setView([5, 150], 7);
+    .setView([5, 150], 9);
 
 // var map = L.map('map').setView([38.89399, -77.03659], 8);
 // projection not correct here...
@@ -83,94 +83,4 @@ map.on('click', function() {
 
 map.on('draw:drawstart', function() {
   log('start')
-})
-
-/**
- * Loading stuff from db
- */
-$(document).ready(function() {
-  Object.keys(COSM.localStore).map(function(k) {
-    var o = COSM.localStore[k] || '{}';
-    try {
-      o = JSON.parse(o)
-    } catch (e) { return }
-    if (!o || !o.id) {
-      return;
-    }
-
-    var options = {
-      color: o.color,
-      fillColor: o.color,
-      fillOpacity: .25,
-      draggable: true
-    }
-    log(o)
-    var node = {
-      id: o.id,
-      cosmData: o,
-      layerType: o.layerType
-    };
-    switch (o.layerType) {
-      case 'circle':
-        log('circle');
-        node.layer = L.circle([o.feature.geometry.coordinates[1], o.feature.geometry.coordinates[0]], o.radius, options);
-        break;
-      case 'marker':
-        log('marker')
-        node.layer =  L.marker([o.feature.geometry.coordinates[1], o.feature.geometry.coordinates[0]], {
-          draggable: true,
-          icon: L.icon({
-            iconUrl: node.cosmData.markerIcon.iconUrl,
-            iconAnchor: L.point([node.cosmData.markerIcon.iconAnchor.x, node.cosmData.markerIcon.iconAnchor.y])
-          })
-        })
-        node.layer.on('dragstart', function() {
-          log('dragstart')
-          COSM.editor.edit(node);
-        })
-        node.layer.on('drag', function() {
-          updateprops()
-        })
-        node.layer.on('click', function() {
-          $('.leaflet-marker-icon').removeClass('selected');
-          $(this._icon).addClass('selected');
-        })
-        break;
-      case 'rectangle':
-        log('rectangle')
-        var bounds = L.latLngBounds(L.latLng(o.feature.geometry.coordinates[0][0][1], o.feature.geometry.coordinates[0][0][0]),
-          L.latLng(o.feature.geometry.coordinates[0][2][1], o.feature.geometry.coordinates[0][2][0]));
-        node.layer = L.rectangle(bounds, options)
-        break;
-      case 'polygon':
-        log('polygon')
-        var line = o.feature.geometry.coordinates[0].map(function(c) {
-          // lon,lat to lat,lng
-          return L.latLng(c[1], c[0])
-        })
-        node.layer = L.polygon(line, options)
-        break;
-      case 'polyline':
-        log('polyline')
-        var line = o.feature.geometry.coordinates.map(function(c) {
-          // lon,lat to lat,lng
-          return L.latLng(c[1], c[0])
-        })
-        node.layer = L.polyline(line, {
-          color: o.color
-        })
-        break;
-      default:
-        log('default')
-    }
-
-    //featureGroup.addLayer(node.layer);
-    node.layer.addTo(featureGroup)
-    node.layer.on('edit', updateprops);
-    node.layer.on('click', function() {
-      log('clicked', node.id);
-      COSM.editor.edit(node);
-    });
-
-  })
 })

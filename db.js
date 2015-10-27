@@ -74,5 +74,6 @@ module.exports = {
       },
       LANDING_TARGET: 0
     },
-    features: require('./features')
+    features: require('./features'),
+    zones: require('./zones')
 };
