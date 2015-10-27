@@ -215,8 +215,9 @@ COSM.editor.loadFromLocalStore = function() {
   $('input.ez-title').val(COSM.localStore.title);
   $('a.link').text('http://intergalacticlabs.co/mars/' + COSM.localStore.zone);
   $('a.link').attr('href', 'http://intergalacticlabs.co/mars/' + COSM.localStore.zone);
-  $('input.email').val(COSM.localStore.email);
+  $('input.email').val(COSM.localStore.email || '');
   $('input.email').keyup();
+  $('#ez-description').val(COSM.localStore.description);
   window.history.pushState({}, "", "/mars/" + COSM.localStore.zone)
   updateZone({
     id: COSM.localStore.zone,
@@ -481,6 +482,11 @@ $('select.ez-load').change(function() {
   COSM.db.loadZone($(this).val());
 })
 
+$('#ez-description').on('keyup', function() {
+  COSM.localStore.description = $(this).val();
+  COSM.db.debounceSaveZone(COSM.localStore.zone)
+})
+
 /**
  * Editor navigation
  */
@@ -577,6 +583,7 @@ COSM.db = {
         COSM.localStore.user = r.zone.user;
         COSM.localStore.email = r.zone.email;
         COSM.localStore.title = r.zone.name;
+        COSM.localStore.description = r.zone.description;
         r.features.map(function(f) {
           COSM.localStore[f.id] = JSON.stringify(f);
         })
@@ -594,7 +601,8 @@ COSM.db = {
         id: COSM.localStore.zone,
         name: COSM.localStore.title,
         email: COSM.localStore.email,
-        user: COSM.localStore.user
+        user: COSM.localStore.user,
+        description: COSM.localStore.description
       }),
       success: function(r) {
         log('saved', COSM.localStore.zone)
@@ -609,7 +617,7 @@ COSM.db = {
     debounceQueue[zone] = setTimeout(function() {
       COSM.db.saveZone();
       delete debounceQueue[zone]
-    }, 1000)
+    }, 200)
     $saveText.text('saving...')
   }
 }

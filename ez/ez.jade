@@ -88,11 +88,12 @@ html
             .four.columns
               label(for="ez-lat") Latitude
               input.u-max-full-width(type="number" name="ez-lat" id="ez-lat" value="150")
+          label(for="ez-description") Description
+          textarea.ez-description.u-full-width(name="ez-description" id="ez-description")
           label.email(for="email") Email (optional, for gravatar)
           input.email.u-full-width(type="email" name="email" id="email")
           label.ez-link Share
           a.link.u-full-width
-          hr
           label(for="ez-load") Load Exploration Zone
           select.ez-load.u-full-width
           button.ez-new Create New
