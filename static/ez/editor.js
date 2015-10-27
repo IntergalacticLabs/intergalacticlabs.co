@@ -393,6 +393,16 @@ $(document).on('change', '#lat, #lng', function() {
   COSM.db.debounceSave(currentEditingNode);
 })
 
+$('#radius').change(function() {
+  currentEditingNode.layer.setRadius(parseFloat($(this).val()));
+  var savedNode = currentEditingNode;
+  currentEditingNode.cosmData.radius = parseFloat($(this).val())
+  exitEditMode();
+  COSM.editor.edit(savedNode);
+  $('.option-marker').click();
+  COSM.db.debounceSave(currentEditingNode);
+})
+
 $('#ez-title').on('keyup', function() {
   var t = $(this).val()
   $('.bar .title').text(t);
