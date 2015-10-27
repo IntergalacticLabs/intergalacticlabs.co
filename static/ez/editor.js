@@ -217,7 +217,7 @@ COSM.editor.loadFromLocalStore = function() {
   $('a.link').attr('href', 'http://intergalacticlabs.co/mars/' + COSM.localStore.zone);
   $('input.email').val(COSM.localStore.email || '');
   $('input.email').keyup();
-  $('#ez-description').val(COSM.localStore.description);
+  $('#ez-description').val(COSM.localStore.description || '');
   window.history.pushState({}, "", "/mars/" + COSM.localStore.zone)
   updateZone({
     id: COSM.localStore.zone,
