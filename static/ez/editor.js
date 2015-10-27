@@ -172,17 +172,29 @@ COSM.editor.init = function() {
     var zone = document.location.pathname.split('/mars/')[1];
     if (COSM.localStore.zone === zone) {
       COSM.editor.loadFromLocalStore();
+      updateZone({
+        id: COSM.localStore.zone,
+        title: COSM.localStore.title
+      });
     } else {
       COSM.localStore.zone = zone;
       COSM.db.loadZone(COSM.localStore.zone, function() {
         log('loaded zone', COSM.localStore.zone);
         COSM.editor.loadFromLocalStore();
+        updateZone({
+          id: COSM.localStore.zone,
+          title: COSM.localStore.title
+        });
       })
     }
   } else if (typeof COSM.localStore.zone !== "undefined") {
     log("loading", COSM.localStore.zone);
     window.history.pushState({}, "", "/mars/" + COSM.localStore.zone)
     COSM.editor.loadFromLocalStore();
+    updateZone({
+      id: COSM.localStore.zone,
+      title: COSM.localStore.title
+    });
   } else {
     $('.ez-new').click()
   }
@@ -198,7 +210,9 @@ $(document).ready(function() {
 
 COSM.editor.loadFromLocalStore = function() {
   log('loadFromLocalStore');
+  featureGroup.clearLayers();
   Object.keys(COSM.localStore).map(function(k) {
+    if (k.indexOf(COSM.localStore.zone) < 0) { return }
     var o = COSM.localStore[k] || '{}';
     try {
       o = JSON.parse(o)
@@ -353,6 +367,10 @@ $('#ez-title').on('keyup', function() {
   $('.bar .title').text(t);
   COSM.localStore.title = t;
   COSM.db.debounceSaveZone();
+  updateZone({
+    id: COSM.localStore.zone,
+    title: COSM.localStore.title
+  });
 })
 
 if (COSM.localStore.title) {
@@ -385,6 +403,30 @@ $('input.email').on('change', function() {
   $(this).keyup();
 })
 
+function updateZone(z) {
+  log('updating zone')
+  try {
+    var zones = JSON.parse(COSM.localStore.loadedZones);
+  } catch (e) {
+    zones = {};
+  }
+  z.updated = Date.now();
+  zones[z.id] = z;
+  COSM.localStore.loadedZones = JSON.stringify(zones);
+  //ugh
+  $('.ez-load').html(Object.keys(zones)
+    .map(function(k) {
+      return zones[k];
+    })
+    .sort(function(a, b) {
+      return a.updated < b.updated;
+    })
+    .reduce(function(opts, zone) {
+    opts += '<option value="' + zone.id + '">' + zone.title + '</option>';
+    return opts;
+  }, ''));
+}
+
 $(document).on('change', '#ez-lng, #ez-lat', function() {
   COSM.editor.zone.layer.setLatLng(L.latLng(
     parseFloat($('#ez-lng').val()),
@@ -394,12 +436,22 @@ $(document).on('change', '#ez-lng, #ez-lat', function() {
 })
 
 $('.ez-new').click(function() {
+  log('new');
+  // make sure to save the old zone
   if (typeof COSM.localStore.zone !== 'undefined'
       && COSM.localStore.loadedZones.indexOf(COSM.localStore.zone) < 0) {
-    COSM.localStore.loadedZones += COSM.localStore.zone;
+    updateZone({
+      id: COSM.localStore.zone,
+      title: COSM.localStore.title
+    });
   }
   COSM.localStore.zone = Math.random().toString(36).slice(2);
   COSM.localStore.title = "New Exploration Zone";
+  $('label.ez-title').text('New Exploration Zone');
+  updateZone({
+    id: COSM.localStore.zone,
+    title: COSM.localStore.title
+  });
   $('.ez-title').val(COSM.localStore.title);
   var zoneEditableLayer = {
     layer: L.circle([5, 150], 100000, {

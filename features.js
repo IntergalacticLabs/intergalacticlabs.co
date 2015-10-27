@@ -14,6 +14,7 @@ var schema = new mongoose.Schema({
     geometry: {},
     properties: {}
   },
+  radius: Number,
   color: String,
   layerType: String,
   markerIcon: {},
