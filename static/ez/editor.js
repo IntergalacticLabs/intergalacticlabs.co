@@ -261,10 +261,14 @@ COSM.editor.loadFromLocalStore = function() {
         COSM.editor.zone = node;
         $('#ez-lng').val(node.layer.getLatLng().lng);
         $('#ez-lat').val(node.layer.getLatLng().lat);
-        map.setView([
-          node.layer.getLatLng().lat,
-          node.layer.getLatLng().lng
-        ], 9);
+        if (COSM.localStore.zone === 'Mars2015') {
+          map.setView([0, 50], 3);
+        } else {
+          map.setView([
+            node.layer.getLatLng().lat,
+            node.layer.getLatLng().lng
+          ], 9);
+        }
         break;
       case 'marker':
         log('marker')
