@@ -374,6 +374,19 @@ $('a.marker').on('click', function() {
   COSM.db.save(currentEditingNode)
 })
 
+$(document).on('change', '#lat, #lng', function() {
+  currentEditingNode.layer.setLatLng(L.latLng(
+    parseFloat($('#lat').val()),
+    parseFloat($('#lng').val())
+  ))
+  var savedNode = currentEditingNode;
+  currentEditingNode.cosmData.feature = call(currentEditingNode, 'layer.toGeoJSON');
+  exitEditMode();
+  COSM.editor.edit(savedNode);
+  $('.option-marker').click();
+  COSM.db.debounceSave(currentEditingNode);
+})
+
 $('#ez-title').on('keyup', function() {
   var t = $(this).val()
   $('.bar .title').text(t);
@@ -441,10 +454,14 @@ function updateZone(z) {
 
 $(document).on('change', '#ez-lng, #ez-lat', function() {
   COSM.editor.zone.layer.setLatLng(L.latLng(
-    parseFloat($('#ez-lng').val()),
-    parseFloat($('#ez-lat').val())
+    parseFloat($('#ez-lat').val()),
+    parseFloat($('#ez-lng').val())
   ))
-  COSM.db.debounceSave(e);
+  var savedNode = COSM.editor.zone;
+  COSM.editor.zone.cosmData.feature = call(COSM.editor.zone, 'layer.toGeoJSON');
+  exitEditMode();
+  COSM.editor.edit(COSM.editor.zone);
+  COSM.db.debounceSave(COSM.editor.zone);
 })
 
 $('.ez-new').click(function() {
@@ -514,7 +531,7 @@ $('.option-marker').on('click', function() {
 })
 
 $('.bar').on('click', function() {
-  $('.general').show();
+  COSM.editor.edit(COSM.editor.zone);
 })
 
 $('.trash').on('click', function() {
